@@ -13,7 +13,7 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +28,7 @@ class StoreTaskRequest extends FormRequest
             'user_id' => 'integer|nullable',
             'name' => 'required|string|min:2|max:50',
             'description' => 'string|min:10|max:255|nullable',
-            'expire_date' => 'required|dateTime|after_or_equal:today',
+            'expire_date' => 'required|date|after_or_equal:today',
             'cost' => 'nullable',
             'is_done' => 'boolean'
         ];

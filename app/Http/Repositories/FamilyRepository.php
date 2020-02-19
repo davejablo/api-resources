@@ -27,9 +27,12 @@ class FamilyRepository
         $familyToDestroy->delete();
     }
 
-    public function updateAndReturnFamily($request, $family){
+    public function updateAndReturnFamily($request, $id){
 
-        $familyToReturn = $family->update($request->validated());
+        $familyFromDb = Family::findOrFail($id);
+        $familyToReturn = $familyFromDb->update($request->validated());
+
+        return $familyToReturn;
 
         $newResource = new FamilyResource($familyToReturn);
         dd($newResource->name);

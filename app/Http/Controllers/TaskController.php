@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Repositories\TaskRepository;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\FamilyResource;
 use App\Http\Resources\TaskResource;
 use App\Task;
 use Illuminate\Http\Request;
@@ -79,10 +80,20 @@ class TaskController extends Controller
     /**
      * @param UpdateTaskRequest $request
      * @param Task $task
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(UpdateTaskRequest $request, $id)
     {
-//        $this->taskRepository->
+        $updatedTask = $this->taskRepository->updateAndReturnTask($request, $id);
+
+        return response()->json([
+            'code' => 200,
+            'status' => 'success',
+            'message' => 'Task updated',
+            'data' => [
+                'item' => $updatedTask,
+            ]
+        ], 200);
     }
 
     /**

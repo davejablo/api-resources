@@ -78,19 +78,19 @@ class FamilyController extends Controller
 
     /**
      * @param UpdateFamilyRequest $request
-     * @param Family $family
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateFamilyRequest $request, Family $family)
+    public function update(UpdateFamilyRequest $request, $id)
     {
-        $familyToReturn = $this->familyRepository->updateAndReturnFamily($request, $family);
+        $updatedFamily = new FamilyResource($this->familyRepository->updateAndReturnFamily($request, $id));
 
         return response()->json([
             'code' => 200,
             'status' => 'success',
             'message' => 'Family updated',
             'data' => [
-                'item' => $familyToReturn,
+                'item' => $updatedFamily,
             ]
         ], 200);
     }

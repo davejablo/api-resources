@@ -27,9 +27,14 @@ class TaskRepository
         $taskToDestroy->delete();
     }
 
-    public function updateAndReturnTask($request, $task){
-        $taskToReturn = $task->update($request->validated());
-        return new TaskResource($taskToReturn);
+    public function updateAndReturnTask($request, $id){
+        $taskFromDb = Task::findOrFail($id);
+        $taskToReturn = $taskFromDb->update($request->validated());
+        $taskFromDbv2 = Task::findOrFail($id);
+
+        //Trzeba pobrać jeszcze raz z bazy xDDDD
+
+        return new TaskResource($taskFromDbv2);
 
 //        $taskToUpdate = $this->getTaskById($id);
 //        $taskToUpdate->name = $request->name;
