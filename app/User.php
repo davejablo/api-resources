@@ -38,17 +38,30 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+
+    protected static function boot()
+    {
+//        parent::boot();
+//
+//        static::created(function($user, $request) {
+//            $user->profile()->create([
+//                'birth_date' => $request->birth_date,
+//                'phone' => $request->phone,
+//            ]);
+//        });
+    }
+
     public function profile()
     {
-        return $this->hasOne('App\UserProfile');
+        return $this->hasOne(UserProfile::class);
     }
 
     public function tasks(){
-        return $this->hasMany('App\Task');
+        return $this->hasMany(Task::class);
     }
 
     public function family(){
-        return $this->belongsTo('App\Family');
+        return $this->belongsTo(Family::class);
     }
 
     public function getJWTIdentifier()

@@ -40,14 +40,6 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(UserProfile::class, function (Faker $faker) {
-    return [
-        'user_id' => rand(1,11),
-        'phone' => $faker->phoneNumber,
-        'birth_date' => $faker->dateTimeThisCentury,
-    ];
-});
-
 $factory->define(Task::class, function (Faker $faker){
 
     return [

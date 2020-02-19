@@ -2,10 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\TaskRepository;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
+use App\Task;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    protected $taskRepository;
+
+    public function __construct(TaskRepository $repository)
+    {
+        $this->taskRepository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +25,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        return TaskResource::collection($this->taskRepository->getTasks());
     }
 
     /**
@@ -27,25 +39,30 @@ class TaskController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreTaskRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        //
+        $newTask = $this->taskRepository->createAndReturnTask($request);
+
+        return response()->json([
+            'code' => 200,
+            'status' => 'success',
+            'message' => 'Task added',
+            'data' => [
+                'item' => $newTask
+            ]
+        ], 200);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Task $task
+     * @return TaskResource
      */
-    public function show($id)
+    public function show(Task $task)
     {
-        //
+        return new TaskResource($task);
     }
 
     /**
@@ -60,25 +77,26 @@ class TaskController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateTaskRequest $request
+     * @param Task $task
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+//        $this->taskRepository->
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Task $task
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Task $task)
     {
-        //
+        $this->taskRepository->destroyTask($task);
+
+        return response()->json([
+            'code' => 200,
+            'status' => 'success',
+            'message' => 'Task deleted',
+        ], 200);
     }
 }
