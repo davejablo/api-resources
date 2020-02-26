@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FamilyResource extends JsonResource
+class GroupResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class FamilyResource extends JsonResource
     {
 //        return parent::toArray($request);
         return [
-            'name' => $this->name
+            'name' => $this->name,
         ];
     }
 }

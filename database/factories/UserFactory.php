@@ -4,6 +4,7 @@
 
 use App\Category;
 use App\Family;
+use App\Group;
 use App\Product;
 use App\Task;
 use App\User;
@@ -22,7 +23,7 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(Family::class, function (Faker $faker) {
+$factory->define(Group::class, function (Faker $faker) {
 
     return [
         'name' => $faker->word,
@@ -36,14 +37,14 @@ $factory->define(User::class, function (Faker $faker) {
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
-        'family_id' => rand(1,2),
+        'group_id' => rand(1,2),
     ];
 });
 
 $factory->define(Task::class, function (Faker $faker){
 
     return [
-        'family_id' => rand(0,2),
+        'group_id' => rand(0,2),
         'user_id' => rand(0,11),
         'name' => $faker->word,
         'description' => $faker->sentence,
