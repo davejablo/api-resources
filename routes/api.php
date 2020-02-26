@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('categories', 'CategoryController');
 Route::resource('tasks', 'TaskController');
-Route::resource('families', 'FamilyController');
+Route::resource('groups', 'GroupController');
 
 
 Route::post('register', 'UserController@register')->middleware('guest');
