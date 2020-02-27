@@ -7,6 +7,8 @@ use App\Http\Repositories\GroupRepository;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Http\Resources\GroupResource;
+use App\Http\Resources\TaskResource;
+use App\Task;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -108,5 +110,11 @@ class GroupController extends Controller
             'status' => 'success',
             'message' => 'Group deleted',
         ], 200);
+    }
+
+    public function getGroupTasks(Group $group)
+    {
+        return $this->groupRepository->getGroupTasks($group);
+        return TaskResource::collection($this->groupRepository->getGroupTasks($group));
     }
 }

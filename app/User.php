@@ -39,17 +39,17 @@ class User extends Authenticatable implements JWTSubject
     ];
 
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function($user, $request) {
-            $user->profile()->create([
-                'birth_date' => $request->birth_date,
-                'phone' => $request->phone,
-            ]);
-        });
-    }
+//    protected static function boot()
+//    {
+//        parent::boot();
+//
+//        static::created(function($user, $request) {
+//            $user->profile()->create([
+//                'birth_date' => $request->birth_date,
+//                'phone' => $request->phone,
+//            ]);
+//        });
+//    }
 
     public function profile()
     {

@@ -6,6 +6,7 @@ namespace App\Http\Repositories;
 
 use App\Group;
 use App\Http\Resources\GroupResource;
+use App\Task;
 
 class GroupRepository
 {
@@ -46,6 +47,11 @@ class GroupRepository
 //        if ($GroupToUpdate->save()){
 //            return new GroupResource($GroupToUpdate);
 //        }
+    }
+
+    public function getGroupTasks(Group $group)
+    {
+        return $groupTasks = $group->tasks()->get();
     }
 
 }

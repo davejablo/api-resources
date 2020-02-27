@@ -45,8 +45,6 @@ class RegisterController extends Controller
     {
         DB::beginTransaction();
         try {
-
-
             $newUser = new User([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -54,7 +52,6 @@ class RegisterController extends Controller
             ]);
 
             $newUser->save();
-
 
             DB::commit();
 

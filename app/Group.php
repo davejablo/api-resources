@@ -9,11 +9,11 @@ class Group extends Model
     protected $fillable = ['name'];
 
     public function users(){
-        return $this->hasMany('App\User');
+        return $this->hasMany(User::class);
     }
 
     public function tasks()
     {
-        return $this->hasMany('App\Task');
+        return $this->hasMany(Task::class);
     }
 }

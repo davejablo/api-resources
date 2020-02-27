@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('categories', 'CategoryController');
 Route::resource('tasks', 'TaskController');
 Route::resource('groups', 'GroupController');
+Route::get('groups/{group}/tasks', 'GroupController@getGroupTasks');
 
 
 Route::post('register', 'UserController@register')->middleware('guest');
@@ -28,10 +29,8 @@ Route::post('login', 'UserController@authenticate');
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('user', 'UserController@getAuthenticatedUser');
 
-
 //    Route::group(function () {
-//        Route::resource('tasks', 'TaskController');
-//        Route::get('tasks/{task}/items', 'TaskRelationsController@getItems');
+//        Route::resource('groups', 'GroupController');
 //    });
 
     Route::resource('products', 'ProductController');
