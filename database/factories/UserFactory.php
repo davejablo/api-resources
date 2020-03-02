@@ -42,14 +42,17 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 $factory->define(Task::class, function (Faker $faker){
+    $status = Task::TASK_STATUS;
+    $status = $status[rand(0, 1)];
 
     return [
         'group_id' => rand(0,2),
-        'user_id' => rand(0,11),
+        'user_id' => rand(1,10),
         'name' => $faker->word,
         'description' => $faker->sentence,
         'expire_date' =>$faker->creditCardExpirationDate,
         'cost' => rand(100, 500),
+        'status' => $status,
         'is_done' => rand(true, false),
 ];
 });

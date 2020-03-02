@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Task;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -30,6 +32,7 @@ class StoreTaskRequest extends FormRequest
             'description' => 'string|min:10|max:255|nullable',
             'expire_date' => 'required|date|after_or_equal:today',
             'cost' => 'nullable',
+            'status' => Rule::in(Task::TASK_STATUS),
             'is_done' => 'boolean'
         ];
     }

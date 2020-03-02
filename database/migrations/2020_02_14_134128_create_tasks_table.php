@@ -1,5 +1,6 @@
 <?php
 
+use App\Task;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +23,8 @@ class CreateTasksTable extends Migration
             $table->text('description');
             $table->dateTime('expire_date')->nullable();
             $table->decimal('cost', 5,2)->default(0)->nullable();
+            $table->enum('status',Task::TASK_STATUS);
+
             $table->boolean('is_done')->default(false);
 
             $table->timestamps();

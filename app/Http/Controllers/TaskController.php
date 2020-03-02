@@ -6,7 +6,9 @@ use App\Http\Repositories\TaskRepository;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\FamilyResource;
+use App\Http\Resources\GroupResource;
 use App\Http\Resources\TaskResource;
+use App\Http\Resources\UserResource;
 use App\Task;
 use Illuminate\Http\Request;
 
@@ -24,7 +26,7 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return TaskResource::collection($this->taskRepository->getTasks());
     }
@@ -109,5 +111,17 @@ class TaskController extends Controller
             'status' => 'success',
             'message' => 'Task deleted',
         ], 200);
+    }
+
+    /**
+     * @param Task $task
+     * @return GroupResource
+     */
+    public function getTaskGroup(Task $task){
+        return new GroupResource($this->taskRepository->getTaskGroup($task));
+    }
+
+    public function getTaskUser(Task $task){
+        return new UserResource($this->taskRepository->getTaskUser($task));
     }
 }

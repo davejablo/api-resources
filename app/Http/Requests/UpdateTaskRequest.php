@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Task;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -24,12 +26,13 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'family_id' => 'integer|nullable',
+            'group_id' => 'integer|nullable',
             'user_id' => 'integer|nullable',
             'name' => 'string|min:2|max:50',
             'description' => 'string|min:10|max:255|nullable',
             'expire_date' => 'date|after_or_equal:today',
             'cost' => 'nullable',
+            'status' => Rule::in(Task::TASK_STATUS),
             'is_done' => 'boolean'
         ];
     }

@@ -7,6 +7,7 @@ namespace App\Http\Repositories;
 use App\Group;
 use App\Http\Resources\GroupResource;
 use App\Task;
+use App\User;
 
 class GroupRepository
 {
@@ -39,7 +40,6 @@ class GroupRepository
         $newResource = new GroupResource($groupToReturn);
         dd($newResource->name);
 
-
         dd($groupToReturn);
 
         return new GroupResource($groupToReturn);
@@ -54,4 +54,18 @@ class GroupRepository
         return $groupTasks = $group->tasks()->get();
     }
 
+    public function getSingleGroupTask(Group $group, Task $task)
+    {
+        return $singleGroupTask = $group->tasks()->where('id', $task->id)->firstOrFail();
+    }
+
+    public function getGroupUsers(Group $group)
+    {
+        return $groupUsers = $group->users()->get();
+    }
+
+    public function getSingleGroupUser(Group $group, User $user)
+    {
+        return $singleGroupUser = $group->users()->where('id', $user->id)->firstOrFail();
+    }
 }

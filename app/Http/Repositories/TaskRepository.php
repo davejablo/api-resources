@@ -39,4 +39,12 @@ class TaskRepository
 //        $taskToUpdate = $this->getTaskById($id);
 //        $taskToUpdate->name = $request->name;
     }
+
+    public function getTaskGroup(Task $task){
+        return $taskGroup = $task->group()->firstOrFail();
+    }
+
+    public function getTaskUser(Task $task){
+        return $taskGroup = $task->user()->firstOrFail();
+    }
 }

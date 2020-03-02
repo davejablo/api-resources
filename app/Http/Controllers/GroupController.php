@@ -8,7 +8,9 @@ use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Http\Resources\GroupResource;
 use App\Http\Resources\TaskResource;
+use App\Http\Resources\UserResource;
 use App\Task;
+use App\User;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -98,7 +100,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @param Group $Group
+     * @param Group $group
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Group $group)
@@ -112,9 +114,39 @@ class GroupController extends Controller
         ], 200);
     }
 
+    /**
+     * @param Group $group
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function getGroupTasks(Group $group)
     {
-        return $this->groupRepository->getGroupTasks($group);
         return TaskResource::collection($this->groupRepository->getGroupTasks($group));
+    }
+
+    /**
+     * @param Group $group
+     * @param Task $task
+     * @return TaskResource
+     */
+    public function getSingleGroupTask(Group $group, Task $task){
+        return new TaskResource($this->groupRepository->getSingleGroupTask($group, $task));
+    }
+
+    /**
+     * @param Group $group
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function getGroupUsers(Group $group)
+    {
+        return UserResource::collection($this->groupRepository->getGroupUsers($group));
+    }
+
+    /**
+     * @param Group $group
+     * @param User $user
+     * @return UserResource
+     */
+    public function getSingleGroupUser(Group $group, User $user){
+        return new UserResource($this->groupRepository->getSingleGroupUser($group, $user));
     }
 }
