@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    protected $GroupRepository;
+    protected $groupRepository;
 
     public function __construct(GroupRepository $repository)
     {
@@ -61,7 +61,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @param Group $Group
+     * @param Group $group
      * @return GroupResource
      */
     public function show(Group $group)

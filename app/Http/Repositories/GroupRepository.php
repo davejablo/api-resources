@@ -1,15 +1,14 @@
 <?php
 
-
 namespace App\Http\Repositories;
 
-
 use App\Group;
+use App\Http\RepositoryInterfaces\GroupRepositoryInterface;
 use App\Http\Resources\GroupResource;
 use App\Task;
 use App\User;
 
-class GroupRepository
+class GroupRepository implements GroupRepositoryInterface
 {
     public function createAndReturnGroup($request){
         $group = Group::create($request->validated());
@@ -23,7 +22,7 @@ class GroupRepository
     }
 
     public function getGroup($group){
-//        return $GroupToReturn = Group::findOrFail($id);
+        return $GroupToReturn = Group::findOrFail($group);
     }
 
     public function destroyGroup($groupToDestroy){
@@ -31,22 +30,8 @@ class GroupRepository
     }
 
     public function updateAndReturnGroup($request, $id){
-
         $groupFromDb = Group::findOrFail($id);
-        $groupToReturn = $groupFromDb->update($request->validated());
-
-        return $groupToReturn;
-
-        $newResource = new GroupResource($groupToReturn);
-        dd($newResource->name);
-
-        dd($groupToReturn);
-
-        return new GroupResource($groupToReturn);
-
-//        if ($GroupToUpdate->save()){
-//            return new GroupResource($GroupToUpdate);
-//        }
+        return $groupToReturn = $groupFromDb->update($request->validated());
     }
 
     public function getGroupTasks(Group $group)
