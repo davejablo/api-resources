@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'group_id'
     ];
 
     /**
@@ -38,17 +38,42 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+
+//    protected static function boot()
+//    {
+//        parent::boot();
+//
+//        static::created(function($user, $request) {
+//            $user->profile()->create([
+//                'birth_date' => $request->birth_date,
+//                'phone' => $request->phone,
+//            ]);
+//        });
+//    }
+
     public function profile()
     {
-        return $this->hasOne('App\UserProfile');
+        return $this->hasOne(UserProfile::class);
     }
 
     public function tasks(){
-        return $this->hasMany('App\Task');
+        return $this->hasMany(Task::class);
     }
 
-    public function family(){
-        return $this->belongsTo('App\Family');
+    public function group(){
+        return $this->belongsTo(Group::class);
+    }
+
+    public function hasProfile(){
+        return $this->profile()->first() ? true : false;
+    }
+
+    public function hasAnyTasks(){
+        return $this->tasks()->first() ? true : false;
+    }
+
+    public function hasGroup(){
+        return $this->group()->first() ? true : false;
     }
 
     public function getJWTIdentifier()

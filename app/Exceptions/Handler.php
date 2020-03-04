@@ -127,6 +127,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                     'code' => 500,
                     'status' => 'error',
+                    'errors' => $exception->getMessage(),
                     'message' => 'Internal Server Error']
                 , 500);
                 break;

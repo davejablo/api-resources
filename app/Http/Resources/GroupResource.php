@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FamilyResource extends JsonResource
+class GroupResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,5 +15,11 @@ class FamilyResource extends JsonResource
     public function toArray($request)
     {
 //        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'users' => UserResource::collection($this->whenLoaded('users')),
+            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
+        ];
     }
 }

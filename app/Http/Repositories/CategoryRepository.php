@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Repositories;
-
 
 use App\Category;
 use App\Http\Resources\CategoryResource;
