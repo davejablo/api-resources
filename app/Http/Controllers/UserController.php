@@ -70,7 +70,7 @@ class UserController extends Controller
 
     public function getAuthenticatedUser()
     {
-        return new UserResource($this->userRepository->getAuthenticatedUser());
+        return new UserResource($this->userRepository->getAuthenticatedUser()->load('group', 'tasks', 'profile'));
     }
 
     public function getUserGroup(){

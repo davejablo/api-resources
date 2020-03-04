@@ -64,6 +64,18 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Group::class);
     }
 
+    public function hasProfile(){
+        return $this->profile()->first() ? true : false;
+    }
+
+    public function hasAnyTasks(){
+        return $this->tasks()->first() ? true : false;
+    }
+
+    public function hasGroup(){
+        return $this->group()->first() ? true : false;
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

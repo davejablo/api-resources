@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Group;
-use App\Http\Repositories\GroupRepository;
+use App\Http\RepositoryInterfaces\GroupRepositoryInterface;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Http\Resources\GroupResource;
@@ -15,21 +15,21 @@ use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    protected $groupRepository;
+    protected $groupRepositoryInterface;
 
-    public function __construct(GroupRepository $repository)
+    public function __construct(GroupRepositoryInterface $repositoryInterface)
     {
-        $this->groupRepository = $repository;
+        $this->groupRepositoryInterface = $repositoryInterface;
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        return GroupResource::collection($this->groupRepository->getGroups());
+        return GroupResource::collection($this->groupRepositoryInterface->getGroups()->load('tasks'));
+        return GroupResource::collection($this->groupRepositoryInterface->getGroups());
+//        return GroupResource::collection($this->groupRepositoryInterface->getGroups()->load('tasks','users'));
     }
 
     /**
@@ -48,7 +48,7 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
-        $newGroup = $this->groupRepository->createAndReturnGroup($request);
+        $newGroup = $this->groupRepositoryInterface->createAndReturnGroup($request);
 
         return response()->json([
             'code' => 200,
@@ -66,7 +66,7 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        return new GroupResource($group);
+        return new GroupResource($this->groupRepositoryInterface->getGroup($group));
     }
 
     /**
@@ -87,7 +87,7 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, $id)
     {
-        $updatedGroup = new GroupResource($this->groupRepository->updateAndReturnGroup($request, $id));
+        $updatedGroup = new GroupResource($this->groupRepositoryInterface->updateAndReturnGroup($request, $id));
 
         return response()->json([
             'code' => 200,
@@ -105,13 +105,19 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        $this->groupRepository->destroyGroup($group);
-
-        return response()->json([
-            'code' => 200,
-            'status' => 'success',
-            'message' => 'Group deleted',
-        ], 200);
+        if ($group->hasAnyRelations()){
+            return response()->json([
+                'code' => 409,
+                'status' => 'conflict',
+                'message' => 'Group cannot be deleted because it has child items',
+            ], 409);
+        }
+            $this->groupRepositoryInterface->destroyGroup($group);
+            return response()->json([
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Group deleted',
+            ], 200);
     }
 
     /**
@@ -120,7 +126,7 @@ class GroupController extends Controller
      */
     public function getGroupTasks(Group $group)
     {
-        return TaskResource::collection($this->groupRepository->getGroupTasks($group));
+        return TaskResource::collection($this->groupRepositoryInterface->getGroupTasks($group));
     }
 
     /**
@@ -129,7 +135,7 @@ class GroupController extends Controller
      * @return TaskResource
      */
     public function getSingleGroupTask(Group $group, Task $task){
-        return new TaskResource($this->groupRepository->getSingleGroupTask($group, $task));
+        return new TaskResource($this->groupRepositoryInterface->getSingleGroupTask($group, $task));
     }
 
     /**
@@ -138,7 +144,7 @@ class GroupController extends Controller
      */
     public function getGroupUsers(Group $group)
     {
-        return UserResource::collection($this->groupRepository->getGroupUsers($group));
+        return UserResource::collection($this->groupRepositoryInterface->getGroupUsers($group));
     }
 
     /**
@@ -147,6 +153,6 @@ class GroupController extends Controller
      * @return UserResource
      */
     public function getSingleGroupUser(Group $group, User $user){
-        return new UserResource($this->groupRepository->getSingleGroupUser($group, $user));
+        return new UserResource($this->groupRepositoryInterface->getSingleGroupUser($group, $user));
     }
 }

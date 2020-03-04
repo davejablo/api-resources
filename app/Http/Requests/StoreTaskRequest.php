@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Group;
 use App\Task;
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,15 +27,33 @@ class StoreTaskRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'family_id' => 'integer|nullable',
-            'user_id' => 'integer|nullable',
-            'name' => 'required|string|min:2|max:50',
-            'description' => 'string|min:10|max:255|nullable',
-            'expire_date' => 'required|date|after_or_equal:today',
-            'cost' => 'nullable',
-            'status' => Rule::in(Task::TASK_STATUS),
-            'is_done' => 'boolean'
-        ];
+        if ($this->attributes->has('user_id')){
+            return [
+                'group_id' => Rule::in(Group::all()->pluck('id')),
+                'user_id' => [
+                    Rule::in(User::all()->pluck('id')),
+                    'integer'
+                ],
+                'name' => 'required|string|min:2|max:50',
+                'description' => 'string|min:10|max:255|nullable',
+                'expire_date' => 'required|date|after_or_equal:today',
+                'cost' => 'nullable',
+                'status' => Rule::in(Task::TASK_STATUS[1]),
+            ];
+        }
+        elseif (!$this->attributes->has('user_id')){
+            return [
+                'group_id' => Rule::in(Group::all()->pluck('id')),
+                'user_id' => [
+                    Rule::in(User::all()->pluck('id')),
+                    'integer|nullable'
+                ],
+                'name' => 'required|string|min:2|max:50',
+                'description' => 'string|min:10|max:255|nullable',
+                'expire_date' => 'required|date|after_or_equal:today',
+                'cost' => 'nullable',
+                'status' => Rule::in(Task::TASK_STATUS[0]),
+            ];
+        }
     }
 }

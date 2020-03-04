@@ -50,13 +50,13 @@ class TaskController extends Controller
         $newTask = $this->taskRepository->createAndReturnTask($request);
 
         return response()->json([
-            'code' => 200,
+            'code' => 201,
             'status' => 'success',
             'message' => 'Task added',
             'data' => [
                 'item' => $newTask
             ]
-        ], 200);
+        ], 201);
     }
 
     /**

@@ -20,7 +20,7 @@ class TaskRepository
     }
 
     public function getTask($task){
-//        return $taskToReturn = Task::findOrFail($id);
+        return $taskToReturn = Task::findOrFail($task);
     }
 
     public function destroyTask($taskToDestroy){
@@ -29,15 +29,10 @@ class TaskRepository
 
     public function updateAndReturnTask($request, $id){
         $taskFromDb = Task::findOrFail($id);
-        $taskToReturn = $taskFromDb->update($request->validated());
-        $taskFromDbv2 = Task::findOrFail($id);
+        $taskFromDb->update($request->validated());
+        $updatedTaskFromDb = Task::findOrFail($id);
 
-        //Trzeba pobrać jeszcze raz z bazy xDDDD
-
-        return new TaskResource($taskFromDbv2);
-
-//        $taskToUpdate = $this->getTaskById($id);
-//        $taskToUpdate->name = $request->name;
+        return new TaskResource($updatedTaskFromDb);
     }
 
     public function getTaskGroup(Task $task){

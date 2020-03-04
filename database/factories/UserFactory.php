@@ -31,23 +31,28 @@ $factory->define(Group::class, function (Faker $faker) {
 });
 
 $factory->define(User::class, function (Faker $faker) {
+    $groups = Group::all()->pluck('id');
+
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
-        'group_id' => rand(1,2),
+        'group_id' => rand($groups->first(), $groups->last()),
     ];
 });
 
 $factory->define(Task::class, function (Faker $faker){
     $status = Task::TASK_STATUS;
-    $status = $status[rand(0, 1)];
+    $status = $status[rand(1, 2)];
+
+    $groups = Group::all()->pluck('id');
+    $users = User::all()->pluck('id');
 
     return [
-        'group_id' => rand(0,2),
-        'user_id' => rand(1,10),
+        'group_id' => rand($groups->first(), $groups->last()),
+        'user_id' => rand($users->first(), $users->last()),
         'name' => $faker->word,
         'description' => $faker->sentence,
         'expire_date' =>$faker->creditCardExpirationDate,

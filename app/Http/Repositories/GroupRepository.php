@@ -7,6 +7,7 @@ use App\Http\RepositoryInterfaces\GroupRepositoryInterface;
 use App\Http\Resources\GroupResource;
 use App\Task;
 use App\User;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class GroupRepository implements GroupRepositoryInterface
 {
@@ -22,7 +23,7 @@ class GroupRepository implements GroupRepositoryInterface
     }
 
     public function getGroup($group){
-        return $GroupToReturn = Group::findOrFail($group);
+        return $groupToReturn = Group::findOrFail($group->id);
     }
 
     public function destroyGroup($groupToDestroy){

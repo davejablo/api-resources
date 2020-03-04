@@ -22,6 +22,9 @@ class UserResource extends JsonResource
             'email_verified_at' => $this->email_verified_at,
             'created_at' => date('d M Y H:i', strtotime($this->created_at)),
             'updated_at' => date('d M Y H:i', strtotime($this->updated_at)),
+            'profile' => new UserProfileResource($this->whenLoaded('profile')),
+            'group' => new GroupResource($this->whenLoaded('group')),
+            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
         ];
 //        return parent::toArray($request);
     }

@@ -16,7 +16,10 @@ class GroupResource extends JsonResource
     {
 //        return parent::toArray($request);
         return [
+            'id' => $this->id,
             'name' => $this->name,
+            'users' => UserResource::collection($this->whenLoaded('users')),
+            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
         ];
     }
 }
