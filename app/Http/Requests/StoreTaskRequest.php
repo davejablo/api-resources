@@ -27,7 +27,7 @@ class StoreTaskRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->attributes->has('user_id')){
+        if ($this->request->has('user_id')){
             return [
                 'group_id' => Rule::in(Group::all()->pluck('id')),
                 'user_id' => [
@@ -41,13 +41,10 @@ class StoreTaskRequest extends FormRequest
                 'status' => Rule::in(Task::TASK_STATUS[1]),
             ];
         }
-        elseif (!$this->attributes->has('user_id')){
+        elseif (!$this->request->has('user_id')){
             return [
                 'group_id' => Rule::in(Group::all()->pluck('id')),
-                'user_id' => [
-                    Rule::in(User::all()->pluck('id')),
-                    'integer|nullable'
-                ],
+                'user_id' => 'nullable',
                 'name' => 'required|string|min:2|max:50',
                 'description' => 'string|min:10|max:255|nullable',
                 'expire_date' => 'required|date|after_or_equal:today',

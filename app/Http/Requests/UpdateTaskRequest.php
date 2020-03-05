@@ -32,7 +32,7 @@ class UpdateTaskRequest extends FormRequest
             'description' => 'string|min:10|max:255|nullable',
             'expire_date' => 'date|after_or_equal:today',
             'cost' => 'nullable',
-            'status' => Rule::in(Task::TASK_STATUS),
+            'status' => Rule::in(Task::TASK_STATUS[2]),
             'is_done' => 'boolean'
         ];
     }
