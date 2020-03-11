@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\UserRepository;
 use App\Http\Requests\RegisterUserRequest;
-use App\Http\Resources\GroupResource;
+use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserProfileResource;
 use App\Http\Resources\UserResource;
@@ -70,11 +70,11 @@ class UserController extends Controller
 
     public function getAuthenticatedUser()
     {
-        return new UserResource($this->userRepository->getAuthenticatedUser()->load('group', 'tasks', 'profile'));
+        return new UserResource($this->userRepository->getAuthenticatedUser()->load('project', 'tasks', 'profile'));
     }
 
-    public function getUserGroup(){
-        return new GroupResource($this->userRepository->getUserGroup());
+    public function getUserProject(){
+        return new ProjectResource($this->userRepository->getUserProject());
     }
 
     public function getUserTasks(){

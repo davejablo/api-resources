@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Group;
+use App\Project;
 use App\Task;
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -29,7 +29,7 @@ class StoreTaskRequest extends FormRequest
     {
         if ($this->request->has('user_id')){
             return [
-                'group_id' => Rule::in(Group::all()->pluck('id')),
+                'project_id' => Rule::in(Project::all()->pluck('id')),
                 'user_id' => [
                     Rule::in(User::all()->pluck('id')),
                     'integer'
@@ -37,13 +37,14 @@ class StoreTaskRequest extends FormRequest
                 'name' => 'required|string|min:2|max:50',
                 'description' => 'string|min:10|max:255|nullable',
                 'expire_date' => 'required|date|after_or_equal:today',
-                'cost' => 'nullable',
+                'time_spent' => 'time|nullable',
+                'task_cost' => 'nullable',
                 'status' => Rule::in(Task::TASK_STATUS[1]),
             ];
         }
         elseif (!$this->request->has('user_id')){
             return [
-                'group_id' => Rule::in(Group::all()->pluck('id')),
+                'project_id' => Rule::in(Project::all()->pluck('id')),
                 'user_id' => 'nullable',
                 'name' => 'required|string|min:2|max:50',
                 'description' => 'string|min:10|max:255|nullable',

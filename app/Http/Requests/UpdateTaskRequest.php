@@ -26,12 +26,13 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'group_id' => 'integer|nullable',
+            'project_id' => 'integer|nullable',
             'user_id' => 'integer|nullable',
             'name' => 'string|min:2|max:50',
             'description' => 'string|min:10|max:255|nullable',
             'expire_date' => 'date|after_or_equal:today',
-            'cost' => 'nullable',
+            'time_spent' => 'time|nullable',
+            'task_cost' => 'nullable',
             'status' => Rule::in(Task::TASK_STATUS[2]),
             'is_done' => 'boolean'
         ];

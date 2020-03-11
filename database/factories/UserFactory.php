@@ -2,10 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Category;
-use App\Family;
-use App\Group;
-use App\Product;
+use App\Project;
 use App\Task;
 use App\User;
 use App\UserProfile;
@@ -23,7 +20,7 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(Group::class, function (Faker $faker) {
+$factory->define(Project::class, function (Faker $faker) {
 
     return [
         'name' => $faker->word,
@@ -31,55 +28,34 @@ $factory->define(Group::class, function (Faker $faker) {
 });
 
 $factory->define(User::class, function (Faker $faker) {
-    $groups = Group::all()->pluck('id');
+    $projects = Project::all()->pluck('id');
 
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
+        'hr_wage' => rand(10, 50),
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
-        'group_id' => rand($groups->first(), $groups->last()),
+        'project_id' => rand($projects->first(), $projects->last()),
     ];
 });
 
 $factory->define(Task::class, function (Faker $faker){
     $status = Task::TASK_STATUS;
     $status = $status[rand(1, 2)];
-
-    $groups = Group::all()->pluck('id');
+    $projects = Project::all()->pluck('id');
     $users = User::all()->pluck('id');
 
     return [
-        'group_id' => rand($groups->first(), $groups->last()),
+        'project_id' => rand($projects->first(), $projects->last()),
         'user_id' => rand($users->first(), $users->last()),
         'name' => $faker->word,
         'description' => $faker->sentence,
         'expire_date' =>$faker->creditCardExpirationDate,
-        'cost' => rand(100, 500),
+        'time_spent' => $faker->time('H:i'),
+        'task_cost' => rand(100, 500),
         'status' => $status,
         'is_done' => rand(true, false),
 ];
 });
-
-$factory->define(Category::class, function (Faker $faker) {
-
-    return [
-        'name' => $faker->domainName,
-    ];
-});
-
-$factory->define(Product::class, function (Faker $faker) {
-    $category_id = rand(1, 10);
-    $type = Product::PRODUCT_TYPES;
-    $type = $type[rand(0, 2)];
-    $price = rand(100, 500);
-
-    return [
-        'category_id' => $category_id,
-        'type' => $type,
-        'details' => $faker->sentence,
-        'price' => $price,
-    ];
-});
-

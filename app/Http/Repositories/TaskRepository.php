@@ -3,10 +3,11 @@
 
 namespace App\Http\Repositories;
 
+use App\Http\RepositoryInterfaces\TaskRepositoryInterface;
 use App\Task;
 use App\Http\Resources\TaskResource;
 
-class TaskRepository
+class TaskRepository implements TaskRepositoryInterface
 {
     public function createAndReturnTask($request){
         $newTask = Task::create($request->validated());
@@ -35,11 +36,11 @@ class TaskRepository
         return new TaskResource($updatedTaskFromDb);
     }
 
-    public function getTaskGroup(Task $task){
-        return $taskGroup = $task->group()->firstOrFail();
+    public function getTaskProject(Task $task){
+        return $taskProject = $task->project()->firstOrFail();
     }
 
     public function getTaskUser(Task $task){
-        return $taskGroup = $task->user()->firstOrFail();
+        return $taskProject = $task->user()->firstOrFail();
     }
 }

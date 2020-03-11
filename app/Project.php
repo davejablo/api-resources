@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use test\Mockery\ReturnTypeObjectTypeHint;
 
-class Group extends Model
+class Project extends Model
 {
     protected $fillable = ['name'];
 

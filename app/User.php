@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'group_id'
+        'name', 'email', 'password', 'project_id', 'hr_wage'
     ];
 
     /**
@@ -60,8 +60,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Task::class);
     }
 
-    public function group(){
-        return $this->belongsTo(Group::class);
+    public function project(){
+        return $this->belongsTo(Project::class);
     }
 
     public function hasProfile(){
@@ -72,8 +72,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->tasks()->first() ? true : false;
     }
 
-    public function hasGroup(){
-        return $this->group()->first() ? true : false;
+    public function hasProject(){
+        return $this->project()->first() ? true : false;
     }
 
     public function getJWTIdentifier()

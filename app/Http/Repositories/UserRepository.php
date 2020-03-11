@@ -37,7 +37,7 @@ class UserRepository
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'group_id' => $request->get('group_id')
+            'project_id' => $request->get('project_id')
         ]);
 
         if ($newUser->save()){
@@ -45,8 +45,8 @@ class UserRepository
         }
     }
 
-    public function getUserGroup(){
-        return $userGroup = $this->getAuthenticatedUser()->group;
+    public function getUserProject(){
+        return $userProject = $this->getAuthenticatedUser()->project;
     }
 
     public function getUserTasks(){

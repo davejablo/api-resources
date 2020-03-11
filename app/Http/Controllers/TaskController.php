@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\TaskRepository;
+use App\Http\RepositoryInterfaces\TaskRepositoryInterface;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
-use App\Http\Resources\FamilyResource;
-use App\Http\Resources\GroupResource;
+use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Task;
@@ -14,21 +14,20 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    protected $taskRepository;
+    protected $taskRepositoryInterface;
 
-    public function __construct(TaskRepository $repository)
+    public function __construct(TaskRepositoryInterface $taskInterface)
     {
-        $this->taskRepository = $repository;
+        $this->taskRepositoryInterface = $taskInterface;
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
-        return TaskResource::collection($this->taskRepository->getTasks());
+        return TaskResource::collection($this->taskRepositoryInterface->getTasks());
     }
 
     /**
@@ -47,7 +46,7 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $newTask = $this->taskRepository->createAndReturnTask($request);
+        $newTask = $this->taskRepositoryInterface->createAndReturnTask($request);
 
         return response()->json([
             'code' => 201,
@@ -86,7 +85,7 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, $id)
     {
-        $updatedTask = $this->taskRepository->updateAndReturnTask($request, $id);
+        $updatedTask = $this->taskRepositoryInterface->updateAndReturnTask($request, $id);
 
         return response()->json([
             'code' => 200,
@@ -104,7 +103,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $this->taskRepository->destroyTask($task);
+        $this->taskRepositoryInterface->destroyTask($task);
 
         return response()->json([
             'code' => 200,
@@ -115,13 +114,13 @@ class TaskController extends Controller
 
     /**
      * @param Task $task
-     * @return GroupResource
+     * @return ProjectResource
      */
-    public function getTaskGroup(Task $task){
-        return new GroupResource($this->taskRepository->getTaskGroup($task));
+    public function getTaskProject(Task $task){
+        return new ProjectResource($this->taskRepositoryInterface->getTaskProject($task));
     }
 
     public function getTaskUser(Task $task){
-        return new UserResource($this->taskRepository->getTaskUser($task));
+        return new UserResource($this->taskRepositoryInterface->getTaskUser($task));
     }
 }
