@@ -15,8 +15,13 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1'], function () {
 
-    Route::post('register', 'UserController@register')->middleware('guest');
-    Route::post('login', 'UserController@authenticate');
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+
+
+
+//    Route::post('register', 'UserController@register')->middleware('guest');
+//    Route::post('login', 'UserController@authenticate');
 
     Route::resource('tasks', 'TaskController');
         Route::group(['prefix' => 'tasks'], function () {
@@ -47,13 +52,17 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::group(['middleware' => ['jwt.verify']], function () {
-        Route::post('logout', 'UserController@postLogout');
-        Route::get('user', 'UserController@getAuthenticatedUser');
+//        Route::post('logout', 'UserController@postLogout');
+//        Route::get('user', 'UserController@getAuthenticatedUser');
+        Route::post('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@getAuthUser');
 
 //        Route::get('user/profile', 'UserController@getUserProfile');
         Route::get('user/project', 'UserController@getUserProject');
         Route::get('user/tasks', 'UserController@getUserTasks');
         Route::get('user/tasks/{task}', 'UserController@getSingleUserTask');
     });
+
+
 
 });
