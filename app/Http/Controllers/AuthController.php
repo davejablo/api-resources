@@ -38,7 +38,7 @@ class AuthController extends Controller
         return response()->json([
             'code' => 200,
             'status' => 'success',
-            'message' => 'Authenticated user OK',
+            'message' => 'Authenticated user OK :>',
             'data' => [
                 'item' => auth()->user()
             ]
@@ -65,5 +65,4 @@ class AuthController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
-
 }

@@ -20,6 +20,8 @@ class User extends Authenticatable implements JWTSubject
         'name', 'email', 'password', 'project_id', 'hr_wage'
     ];
 
+    const ROLES = ['ADMIN', 'LEADER', 'WORKER'];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -50,6 +52,18 @@ class User extends Authenticatable implements JWTSubject
 //            ]);
 //        });
 //    }
+
+    public function roles(){
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasAnyRoles($roles){
+        return null !== $this->roles()->whereIn('name', $roles)->first();
+    }
+
+    public function hasRole($role){
+        return null !== $this->roles()->where('name', $role)->first();
+    }
 
     public function profile()
     {
