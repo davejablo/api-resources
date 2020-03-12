@@ -20,13 +20,15 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::resource('tasks', 'TaskController');
         Route::group(['prefix' => 'tasks'], function () {
+            Route::get('/{task}', 'TaskController@show');
             Route::get('{task}/project', 'TaskController@getTaskProject');
             Route::get('{task}/user', 'TaskController@getTaskUser');
         });
 
     Route::resource('projects', 'ProjectController');
         Route::group(['prefix' => 'projects'], function () {
-            Route::get('/{project}', 'ProjectController@getProjectTasks');
+            Route::get('/{project}', 'ProjectController@show');
+            Route::get('/{project}/tasks', 'ProjectController@getProjectTasks');
             Route::get('/{project}/tasks/{task}', 'ProjectController@getSingleProjectTask');
             Route::get('/{project}/users', 'ProjectController@getProjectUsers');
             Route::get('/{project}/users/{user}', 'ProjectController@getSingleProjectUser');

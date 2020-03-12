@@ -21,7 +21,7 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     public function getTask($task){
-        return $taskToReturn = Task::findOrFail($task);
+        return $taskToReturn = Task::findOrFail($task->id);
     }
 
     public function destroyTask($taskToDestroy){

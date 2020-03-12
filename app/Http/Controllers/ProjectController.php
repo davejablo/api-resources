@@ -27,8 +27,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('tasks'));
-        return ProjectResource::collection($this->projectRepositoryInterface->getProjects());
+        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('users'));
 //        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('tasks','users'));
     }
 
