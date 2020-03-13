@@ -11,7 +11,6 @@ use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Task;
 use App\User;
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
