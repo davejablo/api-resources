@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="88a68512-e121-4f1b-bdca-5c28df21ba47" name="Default Changelist" comment="Cors configuration added.">
+    <list default="true" id="88a68512-e121-4f1b-bdca-5c28df21ba47" name="Default Changelist" comment="&#10;UserController routes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisterController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AuthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TaskController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/JwtMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/JwtMiddleware.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Repositories/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Repositories/UserRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/RegisterUserRequest.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreProjectRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Project/StoreProjectRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreTaskRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Task/StoreTaskRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateProjectRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Project/UpdateProjectRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateTaskRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Task/UpdateTaskRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/UserProfileResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/UserProfileResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/UserResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/UserResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Role.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Role.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,21 +20,9 @@
     </execution>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.5368421">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AuthController.php">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="555">
-                  <caret line="77" column="52" selection-start-line="77" selection-start-column="52" selection-end-line="77" selection-end-column="52" />
-                  <folding>
-                    <element signature="e#40#87#0#PHP" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TaskController.php">
               <provider selected="true" editor-type-id="text-editor">
@@ -63,8 +38,17 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/routes/api.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="533">
-                  <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
+                <state relative-caret-position="563">
+                  <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/Http/Repositories/ProjectRepository.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="578">
+                  <caret line="44" column="73" lean-forward="true" selection-start-line="44" selection-start-column="73" selection-end-line="44" selection-end-column="73" />
                 </state>
               </provider>
             </entry>
@@ -82,22 +66,25 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/Http/Repositories/TaskRepository.php">
+            <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProjectController.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="616">
-                  <caret line="39" selection-start-line="39" selection-end-line="39" selection-end-column="62" />
+                <state relative-caret-position="132">
+                  <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
                   <folding>
-                    <element signature="e#42#100#0#PHP" expanded="true" />
+                    <element signature="e#40#90#0#PHP" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/Http/Resources/UserResource.php">
+            <entry file="file://$PROJECT_DIR$/app/Http/Repositories/TaskRepository.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="622">
-                  <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+                <state relative-caret-position="467">
+                  <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+                  <folding>
+                    <element signature="e#42#100#0#PHP" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -114,8 +101,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/Http/Repositories/UserRepository.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="519">
-                  <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+                <state relative-caret-position="456">
+                  <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
                   <folding>
                     <element signature="e#41#77#0#PHP" expanded="true" />
                   </folding>
@@ -127,7 +114,7 @@
             <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UserController.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="203">
-                  <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+                  <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
                   <folding>
                     <element signature="e#40#81#0#PHP" expanded="true" />
                   </folding>
@@ -151,8 +138,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UserController.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="519">
-                  <caret line="60" column="5" lean-forward="true" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="5" />
+                <state relative-caret-position="409">
+                  <caret line="57" column="5" lean-forward="true" selection-start-line="57" selection-start-column="5" selection-end-line="57" selection-end-column="5" />
                   <folding>
                     <element signature="e#40#81#0#PHP" expanded="true" />
                   </folding>
@@ -192,6 +179,7 @@
       <find>groupRepository</find>
       <find>group</find>
       <find>taskRepository</find>
+      <find>getSingleUserTask</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -249,8 +237,8 @@
         <option value="$PROJECT_DIR$/app/Http/Resources/UserProfileResource.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/TaskController.php" />
         <option value="$PROJECT_DIR$/routes/api.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/UserController.php" />
         <option value="$PROJECT_DIR$/app/Http/Repositories/UserRepository.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/UserController.php" />
       </list>
     </option>
   </component>
@@ -553,7 +541,7 @@
       <workItem from="1583316429580" duration="26398000" />
       <workItem from="1583766819893" duration="4552000" />
       <workItem from="1583834509532" duration="7955000" />
-      <workItem from="1584010445518" duration="32212000" />
+      <workItem from="1584010445518" duration="35199000" />
     </task>
     <task id="LOCAL-00001" summary="Group Interface">
       <created>1583251395404</created>
@@ -625,17 +613,24 @@
       <option name="project" value="LOCAL" />
       <updated>1584090969652</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Refactor&#10;UserController routes">
+      <created>1584111171930</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1584111171930</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="219410000" />
+    <option name="totallyTimeSpent" value="222397000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2062" height="1126" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21978022" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14585415" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -671,7 +666,8 @@
     <MESSAGE value="Role Users setup.&#10;Roles seeder &amp; migration." />
     <MESSAGE value="ADDED UNVERSIONED&#10;Role class,&#10;User class - roles methods.&#10;Roles seeder &amp; role_user migration." />
     <MESSAGE value="Cors configuration added." />
-    <option name="LAST_COMMIT_MESSAGE" value="Cors configuration added." />
+    <MESSAGE value="Refactor&#10;UserController routes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor&#10;UserController routes" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/Product.php" />
@@ -712,13 +708,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Repositories/ProjectRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="968">
-          <caret line="49" column="56" selection-start-line="49" selection-start-column="56" selection-end-line="49" selection-end-column="56" />
         </state>
       </provider>
     </entry>
@@ -946,16 +935,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProjectController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
-          <folding>
-            <element signature="e#40#90#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-394">
@@ -1014,16 +993,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Repositories/TaskRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="39" selection-start-line="39" selection-end-line="39" selection-end-column="62" />
-          <folding>
-            <element signature="e#42#100#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/RepositoryInterfaces/TaskRepositoryInterface.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -1031,10 +1000,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProjectController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+          <folding>
+            <element signature="e#40#90#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Repositories/TaskRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="467">
+          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <element signature="e#42#100#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Repositories/ProjectRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="44" column="73" lean-forward="true" selection-start-line="44" selection-start-column="73" selection-end-line="44" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UserController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <element signature="e#40#81#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Repositories/UserRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+        <state relative-caret-position="456">
+          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
           <folding>
             <element signature="e#41#77#0#PHP" expanded="true" />
           </folding>
@@ -1043,18 +1049,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/api.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="533">
-          <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UserController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="60" column="5" lean-forward="true" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="5" />
-          <folding>
-            <element signature="e#40#81#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="563">
+          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
         </state>
       </provider>
     </entry>

@@ -18,8 +18,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
 
-
-
 //    Route::post('register', 'UserController@register')->middleware('guest');
 //    Route::post('login', 'UserController@authenticate');
 
@@ -46,7 +44,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/{user}/tasks', 'UserController@getUserTasks');
             Route::get('/{user}/tasks/{task}', 'UserController@getSingleUserTask');
             Route::get('/{user}/project', 'UserController@getUserProject');
-            Route::get('/{user}/project/tasks', 'UserController@getSingleProjectUser');
+            Route::get('/{user}/project/tasks', 'UserController@getUserProjectTasks');
     });
 
     Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -54,17 +52,15 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::group(['middleware' => ['jwt.verify']], function () {
-//        Route::post('logout', 'UserController@postLogout');
-//        Route::get('user', 'UserController@getAuthenticatedUser');
+
         Route::post('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@getAuthUser');
 
         Route::get('user/profile', 'UserController@getAuthenticatedProfile');
-        Route::get('user/project', 'UserController@getAutenticatedProject');
+        Route::get('user/project', 'UserController@getAuthenticatedProject');
         Route::get('user/tasks', 'UserController@getAuthenticatedTasks');
         Route::get('user/tasks/{task}', 'UserController@getSingleAuthenticatedTask');
     });
-
 
 
 });

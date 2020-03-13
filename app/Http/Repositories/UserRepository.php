@@ -40,8 +40,20 @@ class UserRepository
         return $userProfile = $user->profile()->firstOrFail();
     }
 
-    public function getUserProject(){
+    public function getAuthenticatedProject(){
         return $userProject = $this->getAuthenticatedUser()->project()->firstOrFail();
+    }
+
+    public function getUserProject(User $user){
+        return $userProject = $user->project()->firstOrFail();
+    }
+
+    public function getUserTasks(User $user){
+        return $userTasks = $user->tasks()->get();
+    }
+
+    public function getSingleUserTask(User $user, Task $task){
+        return $singleUserTask = $user->tasks()->where('id', $task->id)->firstOrFail();
     }
 
     public function getAuthenticatedProfile(){

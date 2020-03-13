@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserProfileResource;
 use App\Http\Resources\UserResource;
+use App\Project;
 use App\Task;
 use App\User;
 use App\UserProfile;
@@ -48,16 +49,24 @@ class UserController extends Controller
         return new UserProfileResource($this->userRepository->getUserProfile($user));
     }
 
-    public function getUserProject(){
-        return new ProjectResource($this->userRepository->getUserProject());
+    public function getSingleUserTask(User $user, Task $task){
+        return new TaskResource ($this->userRepository->getSingleUserTask($user, $task));
+    }
+
+    public function getUserProject(User $user){
+        return new ProjectResource($this->userRepository->getUserProject($user));
+    }
+
+    public function getAuthenticatedProject(){
+        return new ProjectResource($this->userRepository->getAuthenticatedProject());
     }
 
     public function getAuthenticatedProfile(){
         return new UserProfileResource($this->userRepository->getAuthenticatedProfile());
     }
 
-    public function getUserTasks(){
-        return TaskResource::collection($this->userRepository->getUserTasks());
+    public function getUserTasks(User $user){
+        return TaskResource::collection($this->userRepository->getUserTasks($user));
     }
 
     public function getSingleAuthenticatedTask(Task $task){
