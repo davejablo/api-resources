@@ -26,7 +26,7 @@ class UserResource extends JsonResource
             'profile' => new UserProfileResource($this->whenLoaded('profile')),
             'project' => new ProjectResource($this->whenLoaded('project')),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
+            'roles' => RoleResource::collection($this->whenLoaded('roles')),
         ];
-//        return parent::toArray($request);
     }
 }

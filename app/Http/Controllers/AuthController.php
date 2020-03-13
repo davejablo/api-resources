@@ -2,20 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\RegisterUserRequest;
+use App\Http\Resources\UserResource;
+use App\Role;
 use App\User;
+use App\UserProfile;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
     public $loginAfterSignUp = true;
 
-    public function register(Request $request)
+    public function register(RegisterUserRequest $request)
     {
+        $role = $request->get('role');
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'remember_token' => Str::random(10),
+            'email_verified_at' => now(),
+            'hr_wage' => $request->hr_wage,
+            'project_id' => $request->project_id
         ]);
+
+        $user->profile()->create([
+            'birth_date' => $request->birth_date,
+            'phone' => $request->phone,
+        ]);
+
+        switch ($role){
+            case User::ROLES[0]:
+                $adminRole = Role::where('name', User::ROLES[0])->firstOrFail();
+                $user->roles()->attach($adminRole->id);
+                break;
+
+            case User::ROLES[1]:
+                $leaderRole = Role::where('name', User::ROLES[0])->firstOrFail();
+                $user->roles()->attach($leaderRole->id);
+                break;
+
+            case User::ROLES[2]:
+                $workerRole = Role::where('name', User::ROLES[0])->firstOrFail();
+                $user->roles()->attach($workerRole->id);
+                break;
+        }
 
         $token = auth()->login($user);
 
@@ -25,9 +59,12 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        try{
+            if (!$token = auth()->attempt($credentials)) {
+                return response()->json(['error' => 'Invalid credentials :X'], 401);
+            }
+        } catch (JWTException $exception){
+            return response()->json(['error' => 'Could not create token :/'], 500);
         }
 
         return $this->respondWithToken($token);
@@ -38,12 +75,11 @@ class AuthController extends Controller
         return response()->json([
             'code' => 200,
             'status' => 'success',
-            'message' => 'Authenticated user OK :>',
+            'message' => 'Authenticated user OK :D',
             'data' => [
-                'item' => auth()->user()
+                'item' => new UserResource(auth()->user()->load('profile', 'roles'))
             ]
         ], 200);
-        return response()->json(auth()->user());
     }
 
     public function logout()
@@ -54,15 +90,17 @@ class AuthController extends Controller
             'status' => 'success',
             'message' => 'Successfully logged out :>',
         ], 200);
-        return response()->json(['message'=>'Successfully logged out']);
     }
 
     protected function respondWithToken($token)
     {
         return response()->json([
+            'code' => 200,
+            'status' => 'success',
+            'message' => 'Successfully logged in :3',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        ], 200);
     }
 }

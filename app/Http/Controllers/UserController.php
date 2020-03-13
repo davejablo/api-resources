@@ -26,62 +26,41 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function authenticate(Request $request)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
-        try {
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
-        }
-
-        return response()->json(compact('token'));
+        return UserResource::collection($this->userRepository->getUsers());
     }
 
-    public function postLogout()
+    /**
+     * @param User $user
+     * @return UserResource
+     */
+    public function show(User $user)
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
-
-        return response()->json([
-            'code' => 200,
-            'status' => 'success',
-            'message' => 'User logged out'
-        ], 200);
+        return new UserResource($this->userRepository->getUser($user));
     }
 
-    public function register(RegisterUserRequest $request)
-    {
-        $user = $this->userRepository->createAndReturnUser($request);
-        $token = JWTAuth::fromUser($user);
-
-        return response()->json([
-            'code' => 201,
-            'status' => 'success',
-            'message' => 'User registered',
-            'data' => [
-                'item' => $user,
-                'token' => $token
-            ]
-        ], 201);
-    }
-
-    public function getAuthenticatedUser()
-    {
-        return new UserResource($this->userRepository->getAuthenticatedUser()->load('project', 'tasks', 'profile'));
+    public function getUserProfile(User $user){
+        return new UserProfileResource($this->userRepository->getUserProfile($user));
     }
 
     public function getUserProject(){
         return new ProjectResource($this->userRepository->getUserProject());
     }
 
+    public function getAuthenticatedProfile(){
+        return new UserProfileResource($this->userRepository->getAuthenticatedProfile());
+    }
+
     public function getUserTasks(){
         return TaskResource::collection($this->userRepository->getUserTasks());
     }
 
-    public function getSingleUserTask(Task $task){
-        return new TaskResource($this->userRepository->getSingleUserTask($task));
+    public function getSingleAuthenticatedTask(Task $task){
+        return new TaskResource($this->userRepository->getSingleAuthenticatedTask($task));
     }
 }

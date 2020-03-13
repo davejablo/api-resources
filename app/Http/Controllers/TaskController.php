@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\TaskRepository;
 use App\Http\RepositoryInterfaces\TaskRepositoryInterface;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;

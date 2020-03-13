@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,7 +25,6 @@ class StoreProjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string|unique:projects|max:50',
-            //
         ];
     }
 }
