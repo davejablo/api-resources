@@ -41,6 +41,15 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(UserProfile::class, function (Faker $faker) {
+
+    return [
+        'user_id' => $faker->name,
+        'phone' => $faker->phoneNumber,
+        'birth_date' => $faker->dateTimeThisCentury(),
+    ];
+});
+
 $factory->define(Task::class, function (Faker $faker){
     $status = Task::TASK_STATUS;
     $status = $status[rand(1, 2)];
