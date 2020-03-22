@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
         'name', 'email', 'password', 'project_id', 'hr_wage'
     ];
 
-    const ROLES = ['ADMIN', 'LEADER', 'WORKER'];
+    const ROLES = ['ADMIN', 'LEADER', 'WORKER', 'CLIENT'];
 
     /**
      * The attributes that should be hidden for arrays.

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Project;
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -29,10 +30,10 @@ class RegisterUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'hr_wage' => 'nullable',
-            'project_id' => 'integer', 'nullable',
-            'birth_date' => 'before:today|nullable',
-            'phone' => 'nullable',
+            'hr_wage' => 'integer|nullable',
+            'project_id' => Rule::in(Project::all()->pluck('id')),
+            'birth_date' => 'nullable|before:today',
+            'phone' => 'nullable|string|max:12',
             'role' => 'required', Rule::in(User::ROLES),
         ];
     }

@@ -11,14 +11,17 @@ use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Task;
 use App\User;
+use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 class ProjectController extends Controller
 {
     protected $projectRepositoryInterface;
+    protected $auth;
 
-    public function __construct(ProjectRepositoryInterface $projectInterface)
+    public function __construct(ProjectRepositoryInterface $projectInterface, Auth $auth)
     {
         $this->projectRepositoryInterface = $projectInterface;
+        $this->auth = $auth;
     }
 
     /**
@@ -26,6 +29,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        $authUser = $this->auth->user();
+        $this->authorize('view', $authUser->project, Project::class);
         return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('users'));
 //        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('tasks','users'));
     }
@@ -46,6 +51,8 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
+        $authUser = $this->auth->user();
+        $this->authorize('create', $authUser, Project::class);
         $newProject = $this->projectRepositoryInterface->createAndReturnProject($request);
 
         return response()->json([
@@ -64,6 +71,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $authUser = $this->auth->user();
+        $this->authorize('view', $authUser->project, Project::class);
         return new ProjectResource($this->projectRepositoryInterface->getProject($project));
     }
 
@@ -85,6 +94,8 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, $id)
     {
+        $authUser = $this->auth->user();
+        $this->authorize('update', $authUser->project, Project::class);
         $updatedProject = new ProjectResource($this->projectRepositoryInterface->updateAndReturnProject($request, $id));
 
         return response()->json([
@@ -103,6 +114,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $authUser = $this->auth->user();
+        $this->authorize('delete', $authUser->project, Project::class);
         if ($project->hasAnyRelations()){
             return response()->json([
                 'code' => 409,
@@ -124,6 +137,8 @@ class ProjectController extends Controller
      */
     public function getProjectTasks(Project $project)
     {
+        $authUser = $this->auth->user();
+        $this->authorize('view', $authUser->project, Project::class);
         return TaskResource::collection($this->projectRepositoryInterface->getProjectTasks($project));
     }
 
@@ -133,6 +148,8 @@ class ProjectController extends Controller
      * @return TaskResource
      */
     public function getSingleProjectTask(Project $project, Task $task){
+        $authUser = $this->auth->user();
+        $this->authorize('view', $authUser->project, Project::class);
         return new TaskResource($this->projectRepositoryInterface->getSingleProjectTask($project, $task));
     }
 
@@ -142,6 +159,8 @@ class ProjectController extends Controller
      */
     public function getProjectUsers(Project $project)
     {
+        $authUser = $this->auth->user();
+        $this->authorize('view', $authUser->project);
         return UserResource::collection($this->projectRepositoryInterface->getProjectUsers($project));
     }
 
@@ -151,6 +170,8 @@ class ProjectController extends Controller
      * @return UserResource
      */
     public function getSingleProjectUser(Project $project, User $user){
+        $authUser = $this->auth->user();
+        $this->authorize('view', $authUser->project, Project::class);
         return new UserResource($this->projectRepositoryInterface->getSingleProjectUser($project, $user));
     }
 }

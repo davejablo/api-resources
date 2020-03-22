@@ -33,6 +33,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('view', User::class);
         return UserResource::collection($this->userRepository->getUsers());
     }
 
@@ -42,18 +43,22 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource($this->userRepository->getUser($user));
+        $this->authorize('view', User::class);
+        return new UserResource($this->userRepository->getUser($user)->load('roles'));
     }
 
     public function getUserProfile(User $user){
+        $this->authorize('view', User::class);
         return new UserProfileResource($this->userRepository->getUserProfile($user));
     }
 
     public function getSingleUserTask(User $user, Task $task){
+        $this->authorize('view', User::class);
         return new TaskResource ($this->userRepository->getSingleUserTask($user, $task));
     }
 
     public function getUserProject(User $user){
+        $this->authorize('view', User::class);
         return new ProjectResource($this->userRepository->getUserProject($user));
     }
 

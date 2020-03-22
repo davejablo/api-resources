@@ -17,6 +17,7 @@ class AuthController extends Controller
 
     public function register(RegisterUserRequest $request)
     {
+        $this->authorize('create', User::class);
         $role = $request->get('role');
 
         $user = User::create([
@@ -29,10 +30,10 @@ class AuthController extends Controller
             'project_id' => $request->project_id
         ]);
 
-        $user->profile()->create([
-            'birth_date' => $request->birth_date,
-            'phone' => $request->phone,
-        ]);
+            $user->profile()->create([
+                'birth_date' => $request->birth_date,
+                'phone' => $request->phone,
+            ]);
 
         switch ($role){
             case User::ROLES[0]:
@@ -41,12 +42,17 @@ class AuthController extends Controller
                 break;
 
             case User::ROLES[1]:
-                $leaderRole = Role::where('name', User::ROLES[0])->firstOrFail();
+                $leaderRole = Role::where('name', User::ROLES[1])->firstOrFail();
                 $user->roles()->attach($leaderRole->id);
                 break;
 
             case User::ROLES[2]:
-                $workerRole = Role::where('name', User::ROLES[0])->firstOrFail();
+                $workerRole = Role::where('name', User::ROLES[2])->firstOrFail();
+                $user->roles()->attach($workerRole->id);
+                break;
+
+            case User::ROLES[3]:
+                $workerRole = Role::where('name', User::ROLES[3])->firstOrFail();
                 $user->roles()->attach($workerRole->id);
                 break;
         }

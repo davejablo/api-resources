@@ -31,8 +31,12 @@ class ProjectRepository implements ProjectRepositoryInterface
     }
 
     public function updateAndReturnProject($request, $id){
+
         $projectFromDb = Project::findOrFail($id);
-        return $projectToReturn = $projectFromDb->update($request->validated());
+        $projectFromDb->update($request->validated());
+        $updatedProjectFromDb = Project::findOrFail($id);
+
+        return new ProjectResource($updatedProjectFromDb);
     }
 
     public function getProjectTasks(Project $project)

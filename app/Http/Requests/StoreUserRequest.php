@@ -28,7 +28,7 @@ class StoreUserRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'hr_wage' => ['time', 'nullable'],
-            'group_id' => ['nullable', 'integer']
+            'project_id' => ['nullable', 'integer']
         ];
     }
 }

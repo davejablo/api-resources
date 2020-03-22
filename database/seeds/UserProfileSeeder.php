@@ -11,6 +11,11 @@ class UserProfileSeeder extends Seeder
      */
     public function run()
     {
+        factory(App\User::class, 1)->create()->each(function ($user) {
+            $user->profile()->save(factory(App\UserProfile::class)->make());
+            $user->roles()->attach((1));
+        });
+
         factory(App\User::class, 5)->create()->each(function ($user) {
             $user->profile()->save(factory(App\UserProfile::class)->make());
             $user->roles()->attach(rand(1,2));

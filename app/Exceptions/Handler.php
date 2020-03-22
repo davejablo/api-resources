@@ -86,7 +86,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                     'code' => 403,
                     'status' => 'error',
-                    'message' => 'Nie ma autoryzacji']
+                    'message' => 'Nie ma autoryzacji/ Nie masz uprawnień by wykonać tę akcję']
                 , 403);
             break;
 
