@@ -22,10 +22,11 @@ class CreateTasksTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->dateTime('expire_date')->nullable();
-            $table->time('time_spent')->nullable();
+            $table->unsignedInteger('hours_spent')->nullable();
             $table->decimal('task_cost', 5,2)->default(0)->nullable();
 
             $table->enum('status',Task::TASK_STATUS);
+            $table->enum('priority',Task::TASK_PRIORITY);
 
             $table->boolean('is_done')->default(false);
 

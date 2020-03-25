@@ -6,11 +6,21 @@ namespace App\Http\Repositories;
 use App\Http\RepositoryInterfaces\TaskRepositoryInterface;
 use App\Task;
 use App\Http\Resources\TaskResource;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class TaskRepository implements TaskRepositoryInterface
 {
     public function createAndReturnTask($request){
-        $newTask = Task::create($request->validated());
+        if ($user_id = $request->user_id){
+            $hours = $request->hours_spent;
+            $foundUser = User::find($user_id);
+            $newTask = new Task($request->validated());
+            $newTask->task_cost = $hours * $foundUser->hr_wage;
+            $newTask->save();
+        }
+        else
+            $newTask = Task::create($request->validated());
         if ($newTask->save()){
             return new TaskResource($newTask);
         }
@@ -30,6 +40,11 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function updateAndReturnTask($request, $id){
         $taskFromDb = Task::findOrFail($id);
+        if ($hours = $request->hours_spent){
+            $taskFromDb->task_cost = $hours * Auth::user()->hr_wage;
+            $taskFromDb->update($request->validated());
+        }
+        else
         $taskFromDb->update($request->validated());
         $updatedTaskFromDb = Task::findOrFail($id);
 

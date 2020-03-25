@@ -34,6 +34,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny',Task::class);
         return TaskResource::collection($this->taskRepositoryInterface->getTasks());
     }
 
@@ -72,7 +73,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $this->authorize('view', Task::class);
+        $this->authorize('view', $task, Task::class);
         return new TaskResource($this->taskRepositoryInterface->getTask($task));
     }
 
@@ -132,7 +133,7 @@ class TaskController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function getTaskProject(Task $task){
-        $this->authorize('view', Task::class);
+        $this->authorize('view', $task, Task::class);
         return new ProjectResource($this->taskRepositoryInterface->getTaskProject($task));
     }
 
@@ -142,7 +143,7 @@ class TaskController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function getTaskUser(Task $task){
-        $this->authorize('view', Task::class);
+        $this->authorize('view', $task, Task::class);
         return new UserResource($this->taskRepositoryInterface->getTaskUser($task));
     }
 }

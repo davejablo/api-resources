@@ -18,7 +18,7 @@ class ProjectPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasRole('ADMIN');
     }
 
     /**
@@ -28,9 +28,28 @@ class ProjectPolicy
      * @param  \App\Project  $project
      * @return mixed
      */
-    public function view(User $user)
+    public function view(User $user, Project $project)
     {
-        return $user->hasAnyRoles(['ADMIN', 'WORKER', 'LEADER', 'CLIENT']);
+        switch ($user){
+            case $user->hasRole('ADMIN'):
+                return true;
+                break;
+
+            case $user->hasRole(['LEADER']):
+                return $user->project_id == $project->id;
+                break;
+
+            case $user->hasRole('WORKER'):
+                return $user->project_id == $project->id;
+                break;
+
+            case $user->hasRole('CLIENT'):
+                return $user->project_id == $project->id;
+                break;
+
+            default:
+                return false;
+        }
     }
 
     /**
@@ -55,9 +74,24 @@ class ProjectPolicy
      * @param User $user
      * @return bool
      */
-    public function update(User $user)
+    public function update(User $user, Project $project)
     {
-        return $user->hasAnyRoles(['ADMIN', 'CLIENT']);
+        switch ($user){
+            case $user->hasRole('ADMIN'):
+                return true;
+                break;
+
+            case $user->hasRole(['LEADER']):
+                return $user->project_id == $project->id;
+                break;
+
+            case $user->hasRole('CLIENT'):
+                return $user->project_id == $project->id;
+                break;
+
+            default:
+                return false;
+        }
     }
 
 //    /**

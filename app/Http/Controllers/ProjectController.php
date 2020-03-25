@@ -29,8 +29,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $authUser = $this->auth->user();
-        $this->authorize('view', $authUser->project, Project::class);
+        $this->authorize('viewAny',Project::class);
         return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('users'));
 //        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('tasks','users'));
     }
@@ -72,7 +71,7 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $authUser = $this->auth->user();
-        $this->authorize('view', $authUser->project, Project::class);
+        $this->authorize('view', $project, Project::class);
         return new ProjectResource($this->projectRepositoryInterface->getProject($project));
     }
 
@@ -137,8 +136,7 @@ class ProjectController extends Controller
      */
     public function getProjectTasks(Project $project)
     {
-        $authUser = $this->auth->user();
-        $this->authorize('view', $authUser->project, Project::class);
+        $this->authorize('view', $project, Project::class);
         return TaskResource::collection($this->projectRepositoryInterface->getProjectTasks($project));
     }
 
@@ -148,8 +146,7 @@ class ProjectController extends Controller
      * @return TaskResource
      */
     public function getSingleProjectTask(Project $project, Task $task){
-        $authUser = $this->auth->user();
-        $this->authorize('view', $authUser->project, Project::class);
+        $this->authorize('view', $project, Project::class);
         return new TaskResource($this->projectRepositoryInterface->getSingleProjectTask($project, $task));
     }
 

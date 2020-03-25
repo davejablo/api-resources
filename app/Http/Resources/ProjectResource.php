@@ -18,6 +18,11 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'tasks_cost' => $this->getTasksCost(),
+            'total_tasks' => $this->getAmountOfAllTasks(),
+            'done_tasks' => $this->getAmountOfDoneTasks(),
+            'in_progress_tasks' => $this->getAmountOfInProgressTasks(),
+            'not_assigned_tasks' => $this->getAmountOfNaTasks(),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
         ];

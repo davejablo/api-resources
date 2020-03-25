@@ -33,7 +33,7 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'hr_wage' => rand(10, 50),
+        'hr_wage' => rand(10, 40),
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
@@ -55,6 +55,8 @@ $factory->define(Task::class, function (Faker $faker){
     $status = $status[rand(1, 2)];
     $projects = Project::all()->pluck('id');
     $users = User::all()->pluck('id');
+    $priority = Task::TASK_PRIORITY;
+    $priority = $priority[rand(0,3)];
 
     return [
         'project_id' => rand($projects->first(), $projects->last()),
@@ -62,9 +64,10 @@ $factory->define(Task::class, function (Faker $faker){
         'name' => $faker->word,
         'description' => $faker->sentence,
         'expire_date' =>$faker->creditCardExpirationDate,
-        'time_spent' => $faker->time('H:i'),
+        'hours_spent' => rand(1,24),
         'task_cost' => rand(100, 500),
         'status' => $status,
         'is_done' => rand(true, false),
+        'priority' => $priority,
 ];
 });

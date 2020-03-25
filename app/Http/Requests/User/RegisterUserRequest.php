@@ -33,7 +33,7 @@ class RegisterUserRequest extends FormRequest
             'hr_wage' => 'integer|nullable',
             'project_id' => Rule::in(Project::all()->pluck('id')),
             'birth_date' => 'nullable|before:today',
-            'phone' => 'nullable|string|max:12',
+            'phone' => 'nullable|string|max:12|unique:user_profiles',
             'role' => 'required', Rule::in(User::ROLES),
         ];
     }

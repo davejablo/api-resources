@@ -19,7 +19,7 @@ class TaskPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasRole('ADMIN');
     }
 
     /**
@@ -29,9 +29,28 @@ class TaskPolicy
      * @param  \App\Task  $task
      * @return mixed
      */
-    public function view(User $user)
+    public function view(User $user, Task $task)
     {
-        return $user->hasAnyRoles(['ADMIN', 'WORKER', 'LEADER', 'CLIENT']);
+        switch ($user){
+            case $user->hasRole('ADMIN'):
+                return true;
+                break;
+
+            case $user->hasRole(['LEADER']):
+                return $user->project_id == $task->project_id;
+                break;
+
+            case $user->hasRole('WORKER'):
+                return $user->project_id == $task->project_id;
+                break;
+
+            case $user->hasRole('CLIENT'):
+                return $user->project_id == $task->project_id;
+                break;
+
+            default:
+                return false;
+        }
     }
 
     /**

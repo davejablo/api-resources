@@ -22,10 +22,11 @@ class TaskResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'expire_date' => $this->expire_date,
-            'time_spent' => $this->time_spent,
+            'hours_spent' => $this->hours_spent,
             'task_cost' => $this->task_cost,
             'status' => $this->status,
             'is_done' => $this->is_done,
+            'priority' => $this->priority,
         ];
     }
 }

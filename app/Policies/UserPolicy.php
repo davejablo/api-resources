@@ -17,7 +17,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasRole('ADMIN');
     }
 
     /**
@@ -27,9 +27,28 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function view(User $user)
+    public function view(User $user, User $model)
     {
-        return $user->hasAnyRoles(['ADMIN', 'WORKER', 'LEADER', 'CLIENT']);
+        switch ($user){
+            case $user->hasRole('ADMIN'):
+                return true;
+                break;
+
+            case $user->hasRole(['LEADER']):
+                return $user->project_id == $model->project_id;
+                break;
+
+            case $user->hasRole('WORKER'):
+                return $user->project_id == $model->project_id;
+                break;
+
+            case $user->hasRole('CLIENT'):
+                return $user->project_id == $model->project_id;
+                break;
+
+            default:
+                return false;
+        }
     }
 
     /**
@@ -40,7 +59,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('ADMIN');
+        return $user->hasAnyRoles(['ADMIN', 'LEADER']);
     }
 
     /**

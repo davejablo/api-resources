@@ -19,8 +19,10 @@ class UserProfileResource extends JsonResource
             'phone' => $this->phone,
             'birth_date' => $this->birth_date,
             'age' => $this->getAge(),
+            'all_tasks' => $this->getAmountOfRelatedTasks(),
             'done_tasks' => $this->getAmountOfDoneTasks(),
-            'in_progress_tasks' => $this->getAmountOfInProgressTasks()
+            'in_progress_tasks' => $this->getAmountOfInProgressTasks(),
+            'total_hours_spent' => $this->getHoursSpent(),
         ];
     }
 }

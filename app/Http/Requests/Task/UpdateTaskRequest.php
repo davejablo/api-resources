@@ -31,10 +31,10 @@ class UpdateTaskRequest extends FormRequest
             'name' => 'string|min:2|max:50',
             'description' => 'string|min:10|max:255|nullable',
             'expire_date' => 'date|after_or_equal:today',
-            'time_spent' => 'nullable',
-            'task_cost' => 'nullable',
-            'status' => Rule::in(Task::TASK_STATUS[2]),
-            'is_done' => 'boolean'
+            'hours_spent' => 'integer|min:1|max:24|nullable',
+            'status' => 'nullable', Rule::in(Task::TASK_STATUS[2]),
+            'is_done' => 'boolean',
+            'priority' => 'required', Rule::in(Task::TASK_PRIORITY),
         ];
     }
 }

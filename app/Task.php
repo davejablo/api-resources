@@ -12,13 +12,15 @@ class Task extends Model
         'name',
         'description',
         'expire_date',
-        'time_spent',
+        'hours_spent',
         'task_cost',
         'status',
         'is_done',
+        'priority',
     ];
 
     const TASK_STATUS = ['not_assigned', 'in_progress', 'done'];
+    const TASK_PRIORITY = ['low', 'medium', 'high', 'urgent'];
 
     public function project(){
         return $this->belongsTo(Project::class);

@@ -61,7 +61,7 @@ class UserRepository
     }
 
     public function getAuthenticatedTasks(){
-        return $userTasks = $this->getAuthenticatedUser()->tasks()->firstOrFail();
+        return $userTasks = $this->getAuthenticatedUser()->tasks()->get();
     }
 
     public function getSingleAuthenticatedTask(Task $task){
