@@ -25,6 +25,7 @@ class StoreProjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string|unique:projects|max:50',
+            'budget' => 'required|numeric|between:0,999999.99',
         ];
     }
 }

@@ -18,6 +18,7 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'budget' => $this->budget,
             'tasks_cost' => $this->getTasksCost(),
             'total_tasks' => $this->getAmountOfAllTasks(),
             'done_tasks' => $this->getAmountOfDoneTasks(),

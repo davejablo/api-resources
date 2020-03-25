@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Project extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'budget'];
 
     public function users(){
         return $this->hasMany(User::class);
@@ -32,11 +32,12 @@ class Project extends Model
     }
 
     public function getTasksCost(){
-        return $this->tasks()
+        $cost = $this->tasks()
             ->where('status', 'done')
             ->where('is_done', true)
             ->pluck('task_cost')
             ->sum();
+        return number_format($cost, 2);
     }
 
     public function getAmountOfAllTasks(){

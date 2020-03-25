@@ -24,6 +24,7 @@ $factory->define(Project::class, function (Faker $faker) {
 
     return [
         'name' => $faker->word,
+        'budget' => rand(0, 999999.99)
     ];
 });
 
