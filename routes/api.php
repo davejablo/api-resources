@@ -45,13 +45,19 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'users'], function () {
             Route::get('/{user}', 'userController@show');
             Route::get('/{user}/profile', 'UserController@getUserProfile');
+            Route::patch('/{user}/profile', 'UserController@updateProfile');
             Route::get('/{user}/tasks', 'UserController@getUserTasks');
             Route::get('/{user}/tasks/{task}', 'UserController@getSingleUserTask');
             Route::get('/{user}/project', 'UserController@getUserProject');
             Route::get('/{user}/project/tasks', 'UserController@getUserProjectTasks');
         });
 
-        Route::post('logout', 'AuthController@logout');
+        Route::resource('profiles', 'UserProfileController');
+        Route::group(['prefix' => 'profiles'], function () {
+
+        });
+
+            Route::post('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@getAuthUser');
 
         Route::get('user/profile', 'UserController@getAuthenticatedProfile');

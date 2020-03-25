@@ -29,7 +29,7 @@ class UserRepository
     }
 
     public  function getUsers(){
-        return $users = User::all();
+        return $users = User::paginate(5);
     }
 
     public function getUser($user){
@@ -49,7 +49,7 @@ class UserRepository
     }
 
     public function getUserTasks(User $user){
-        return $userTasks = $user->tasks()->get();
+        return $userTasks = $user->tasks()->paginate(5);
     }
 
     public function getSingleUserTask(User $user, Task $task){
@@ -61,7 +61,7 @@ class UserRepository
     }
 
     public function getAuthenticatedTasks(){
-        return $userTasks = $this->getAuthenticatedUser()->tasks()->get();
+        return $userTasks = $this->getAuthenticatedUser()->tasks()->paginate(5);
     }
 
     public function getSingleAuthenticatedTask(Task $task){

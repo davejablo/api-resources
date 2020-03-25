@@ -26,11 +26,12 @@ class ProjectController extends Controller
 
     /**
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
         $this->authorize('viewAny',Project::class);
-        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('users'));
+        return ProjectResource::collection($this->projectRepositoryInterface->getProjects());
 //        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('tasks','users'));
     }
 
@@ -47,6 +48,7 @@ class ProjectController extends Controller
     /**
      * @param StoreProjectRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(StoreProjectRequest $request)
     {
@@ -67,6 +69,7 @@ class ProjectController extends Controller
     /**
      * @param Project $project
      * @return ProjectResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Project $project)
     {
@@ -90,6 +93,7 @@ class ProjectController extends Controller
      * @param UpdateProjectRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(UpdateProjectRequest $request, $id)
     {
@@ -110,6 +114,7 @@ class ProjectController extends Controller
     /**
      * @param Project $project
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Project $project)
     {
@@ -133,6 +138,7 @@ class ProjectController extends Controller
     /**
      * @param Project $project
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function getProjectTasks(Project $project)
     {
@@ -144,6 +150,7 @@ class ProjectController extends Controller
      * @param Project $project
      * @param Task $task
      * @return TaskResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function getSingleProjectTask(Project $project, Task $task){
         $this->authorize('view', $project, Project::class);
@@ -153,6 +160,7 @@ class ProjectController extends Controller
     /**
      * @param Project $project
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function getProjectUsers(Project $project)
     {
@@ -165,6 +173,7 @@ class ProjectController extends Controller
      * @param Project $project
      * @param User $user
      * @return UserResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function getSingleProjectUser(Project $project, User $user){
         $authUser = $this->auth->user();

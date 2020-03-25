@@ -31,6 +31,7 @@ class TaskController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
     {
@@ -51,6 +52,7 @@ class TaskController extends Controller
     /**
      * @param StoreTaskRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(StoreTaskRequest $request)
     {
@@ -70,6 +72,7 @@ class TaskController extends Controller
     /**
      * @param Task $task
      * @return TaskResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Task $task)
     {

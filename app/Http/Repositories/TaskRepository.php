@@ -27,7 +27,7 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     public function getTasks(){
-        return $tasks = Task::all();
+        return $tasks = Task::paginate(5);
     }
 
     public function getTask($task){

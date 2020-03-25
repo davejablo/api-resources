@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\UserRepository;
-use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UserProfile\UpdateUserProfileRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserProfileResource;
@@ -13,6 +13,7 @@ use App\Task;
 use App\User;
 use App\UserProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -68,16 +69,16 @@ class UserController extends Controller
         return new ProjectResource($this->userRepository->getUserProject($user));
     }
 
-    public function getAuthenticatedProject(){
-        return new ProjectResource($this->userRepository->getAuthenticatedProject());
-    }
-
     public function getAuthenticatedProfile(){
         return new UserProfileResource($this->userRepository->getAuthenticatedProfile());
     }
 
     public function getAuthenticatedTasks(){
         return TaskResource::collection($this->userRepository->getAuthenticatedTasks());
+    }
+
+    public function getAuthenticatedProject(){
+        return new ProjectResource($this->userRepository->getAuthenticatedProject());
     }
 
     public function getSingleAuthenticatedTask(Task $task){

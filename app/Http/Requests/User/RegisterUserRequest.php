@@ -32,8 +32,8 @@ class RegisterUserRequest extends FormRequest
             'password' => 'required|string|min:6|confirmed',
             'hr_wage' => 'integer|nullable',
             'project_id' => Rule::in(Project::all()->pluck('id')),
-            'birth_date' => 'nullable|before:today',
-            'phone' => 'nullable|string|max:12|unique:user_profiles',
+            'birth_date' => 'nullable|before:today|after:1920-01-01',
+            'phone' => 'nullable|string|size:11|unique:user_profiles',
             'role' => 'required', Rule::in(User::ROLES),
         ];
     }
