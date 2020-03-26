@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Task;
 
 use App\Task;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,14 +26,15 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'group_id' => 'integer|nullable',
+            'project_id' => 'integer|nullable',
             'user_id' => 'integer|nullable',
             'name' => 'string|min:2|max:50',
             'description' => 'string|min:10|max:255|nullable',
             'expire_date' => 'date|after_or_equal:today',
-            'cost' => 'nullable',
-            'status' => Rule::in(Task::TASK_STATUS),
-            'is_done' => 'boolean'
+            'hours_spent' => 'integer|min:1|max:24|nullable',
+            'status' => 'nullable', Rule::in(Task::TASK_STATUS[2]),
+            'is_done' => 'boolean',
+            'priority' => 'required', Rule::in(Task::TASK_PRIORITY),
         ];
     }
 }

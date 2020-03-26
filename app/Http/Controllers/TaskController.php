@@ -3,32 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\TaskRepository;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
-use App\Http\Resources\FamilyResource;
-use App\Http\Resources\GroupResource;
+use App\Http\Repositories\UserRepository;
+use App\Http\RepositoryInterfaces\TaskRepositoryInterface;
+use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Task;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Contracts\Providers\Auth;
+
 
 class TaskController extends Controller
 {
-    protected $taskRepository;
+    protected $taskRepositoryInterface;
+    protected $userRepository;
+    protected $auth;
 
-    public function __construct(TaskRepository $repository)
+    public function __construct(TaskRepositoryInterface $taskInterface, UserRepository $userRepository, Auth $auth)
     {
-        $this->taskRepository = $repository;
+        $this->taskRepositoryInterface = $taskInterface;
+        $this->userRepository = $userRepository;
+        $this->auth = $auth;
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
     {
-        return TaskResource::collection($this->taskRepository->getTasks());
+        $this->authorize('viewAny',Task::class);
+        return TaskResource::collection($this->taskRepositoryInterface->getTasks());
     }
 
     /**
@@ -44,10 +52,12 @@ class TaskController extends Controller
     /**
      * @param StoreTaskRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(StoreTaskRequest $request)
     {
-        $newTask = $this->taskRepository->createAndReturnTask($request);
+        $this->authorize('create', Task::class);
+        $newTask = $this->taskRepositoryInterface->createAndReturnTask($request);
 
         return response()->json([
             'code' => 201,
@@ -62,10 +72,12 @@ class TaskController extends Controller
     /**
      * @param Task $task
      * @return TaskResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Task $task)
     {
-        return new TaskResource($task);
+        $this->authorize('view', $task, Task::class);
+        return new TaskResource($this->taskRepositoryInterface->getTask($task));
     }
 
     /**
@@ -81,12 +93,15 @@ class TaskController extends Controller
 
     /**
      * @param UpdateTaskRequest $request
-     * @param Task $task
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(UpdateTaskRequest $request, $id)
     {
-        $updatedTask = $this->taskRepository->updateAndReturnTask($request, $id);
+        $task = Task::findOrFail($id);
+        $this->authorize('update', $task, Task::class);
+        $updatedTask = $this->taskRepositoryInterface->updateAndReturnTask($request, $id);
 
         return response()->json([
             'code' => 200,
@@ -101,10 +116,12 @@ class TaskController extends Controller
     /**
      * @param Task $task
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Task $task)
     {
-        $this->taskRepository->destroyTask($task);
+        $this->authorize('delete', $task, Task::class);
+        $this->taskRepositoryInterface->destroyTask($task);
 
         return response()->json([
             'code' => 200,
@@ -115,13 +132,21 @@ class TaskController extends Controller
 
     /**
      * @param Task $task
-     * @return GroupResource
+     * @return ProjectResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function getTaskGroup(Task $task){
-        return new GroupResource($this->taskRepository->getTaskGroup($task));
+    public function getTaskProject(Task $task){
+        $this->authorize('view', $task, Task::class);
+        return new ProjectResource($this->taskRepositoryInterface->getTaskProject($task));
     }
 
+    /**
+     * @param Task $task
+     * @return UserResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function getTaskUser(Task $task){
-        return new UserResource($this->taskRepository->getTaskUser($task));
+        $this->authorize('view', $task, Task::class);
+        return new UserResource($this->taskRepositoryInterface->getTaskUser($task));
     }
 }

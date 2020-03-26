@@ -12,24 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class UserRepository
 {
     public function getAuthenticatedUser(){
-        try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
-            }
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-
-            return response()->json(['token_expired'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-
-            return response()->json(['token_invalid'], $e->getStatusCode());
-
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-
-            return response()->json(['token_absent'], $e->getStatusCode());
-        }
-        return $user;
+        return $user = auth()->user();
     }
 
     public function createAndReturnUser($request){
@@ -37,7 +20,7 @@ class UserRepository
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'group_id' => $request->get('group_id')
+            'project_id' => $request->get('project_id')
         ]);
 
         if ($newUser->save()){
@@ -45,15 +28,43 @@ class UserRepository
         }
     }
 
-    public function getUserGroup(){
-        return $userGroup = $this->getAuthenticatedUser()->group;
+    public  function getUsers(){
+        return $users = User::paginate(5);
     }
 
-    public function getUserTasks(){
-        return $userTasks = $this->getAuthenticatedUser()->tasks;
+    public function getUser($user){
+        return $userToReturn = User::findOrFail($user->id);
     }
 
-    public function getSingleUserTask(Task $task){
+    public function getUserProfile(User $user){
+        return $userProfile = $user->profile()->firstOrFail();
+    }
+
+    public function getAuthenticatedProject(){
+        return $userProject = $this->getAuthenticatedUser()->project()->firstOrFail();
+    }
+
+    public function getUserProject(User $user){
+        return $userProject = $user->project()->firstOrFail();
+    }
+
+    public function getUserTasks(User $user){
+        return $userTasks = $user->tasks()->paginate(5);
+    }
+
+    public function getSingleUserTask(User $user, Task $task){
+        return $singleUserTask = $user->tasks()->where('id', $task->id)->firstOrFail();
+    }
+
+    public function getAuthenticatedProfile(){
+        return $userProfile = $this->getAuthenticatedUser()->profile()->firstOrFail();
+    }
+
+    public function getAuthenticatedTasks(){
+        return $userTasks = $this->getAuthenticatedUser()->tasks()->paginate(5);
+    }
+
+    public function getSingleAuthenticatedTask(Task $task){
         $user = $this->getAuthenticatedUser();
         return $userSingleTask = $user->tasks()->where('id', $task->id)->firstOrFail();
     }

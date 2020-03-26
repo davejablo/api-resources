@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Project;
 
-use App\Product;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class StoreProductRequest extends FormRequest
+class UpdateProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +13,7 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,10 +24,8 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => 'integer|required',
-            'type' => Rule::in(Product::PRODUCT_TYPES),
-            'details' => 'string|required|max:255',
-            'price' => 'required'
+            'name' => 'nullable|string|unique:projects|max:50',
+            'budget' => 'required|numeric|between:0,999999.99',
         ];
     }
 }

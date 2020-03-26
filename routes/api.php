@@ -15,46 +15,54 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1'], function () {
 
-    Route::post('register', 'UserController@register')->middleware('guest');
-    Route::post('login', 'UserController@authenticate');
-
-    Route::resource('categories', 'CategoryController');
-    Route::resource('products', 'ProductController');
-
-    Route::resource('tasks', 'TaskController');
-        Route::group(['prefix' => 'tasks'], function () {
-            Route::get('{task}/group', 'TaskController@getTaskGroup');
-            Route::get('{task}/user', 'TaskController@getTaskUser');
-        });
-
-    Route::resource('groups', 'GroupController');
-        Route::group(['prefix' => 'groups'], function () {
-            Route::get('/{group}/tasks', 'GroupController@getGroupTasks');
-            Route::get('/{group}/tasks/{task}', 'GroupController@getSingleGroupTask');
-            Route::get('/{group}/users', 'GroupController@getGroupUsers');
-            Route::get('/{group}/users/{user}', 'GroupController@getSingleGroupUser');
-        });
-
-    Route::resource('users', 'UserController');
-        Route::group(['prefix' => 'users'], function () {
-//            Route::get('/{group}/tasks', 'GroupController@getGroupTasks');
-//            Route::get('/{group}/tasks/{task}', 'GroupController@getSingleGroupTask');
-//            Route::get('/{group}/users', 'GroupController@getGroupUsers');
-//            Route::get('/{group}/users/{user}', 'GroupController@getSingleGroupUser');
-    });
+    Route::post('login', 'AuthController@login');
 
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
 
     Route::group(['middleware' => ['jwt.verify']], function () {
-        Route::post('logout', 'UserController@postLogout');
-        Route::get('user', 'UserController@getAuthenticatedUser');
 
-//        Route::get('user/profile', 'UserController@getUserProfile');
-        Route::get('user/group', 'UserController@getUserGroup');
-        Route::get('user/tasks', 'UserController@getUserTasks');
-        Route::get('user/tasks/{task}', 'UserController@getSingleUserTask');
+        Route::post('register', 'AuthController@register');
+
+        Route::resource('projects', 'ProjectController');
+        Route::group(['prefix' => 'projects'], function () {
+            Route::get('/{project}', 'ProjectController@show');
+            Route::get('/{project}/tasks', 'ProjectController@getProjectTasks');
+            Route::get('/{project}/tasks/{task}', 'ProjectController@getSingleProjectTask');
+            Route::get('/{project}/users', 'ProjectController@getProjectUsers');
+            Route::get('/{project}/users/{user}', 'ProjectController@getSingleProjectUser');
+        });
+
+        Route::resource('tasks', 'TaskController');
+        Route::group(['prefix' => 'tasks'], function () {
+            Route::get('/{task}', 'TaskController@show');
+            Route::get('{task}/project', 'TaskController@getTaskProject');
+            Route::get('{task}/user', 'TaskController@getTaskUser');
+        });
+
+        Route::resource('users', 'UserController');
+        Route::group(['prefix' => 'users'], function () {
+            Route::get('/{user}', 'userController@show');
+            Route::get('/{user}/profile', 'UserController@getUserProfile');
+            Route::patch('/{user}/profile', 'UserController@updateProfile');
+            Route::get('/{user}/tasks', 'UserController@getUserTasks');
+            Route::get('/{user}/tasks/{task}', 'UserController@getSingleUserTask');
+            Route::get('/{user}/project', 'UserController@getUserProject');
+            Route::get('/{user}/project/tasks', 'UserController@getUserProjectTasks');
+        });
+
+        Route::resource('profiles', 'UserProfileController');
+        Route::group(['prefix' => 'profiles'], function () {
+
+        });
+
+            Route::post('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@getAuthUser');
+
+        Route::get('user/profile', 'UserController@getAuthenticatedProfile');
+        Route::get('user/project', 'UserController@getAuthenticatedProject');
+        Route::get('user/tasks', 'UserController@getAuthenticatedTasks');
+        Route::get('user/tasks/{task}', 'UserController@getSingleAuthenticatedTask');
     });
-
 });

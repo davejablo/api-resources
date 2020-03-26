@@ -43,29 +43,6 @@ class RegisterController extends Controller
      */
     protected function store(array $data)
     {
-        DB::beginTransaction();
-        try {
-            $newUser = new User([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-            ]);
-
-            $newUser->save();
-
-            DB::commit();
-
-            return new UserResource($newUser);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return response()->json([
-                'error' => [
-                    'code' => 500,
-                    'message' => 'Internal server error'
-                ]
-            ], 500);
-        }
+        return $data;
     }
 }

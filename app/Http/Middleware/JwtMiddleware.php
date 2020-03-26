@@ -24,11 +24,23 @@ class JwtMiddleware extends BaseMiddleware
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
             if ($e instanceof TokenInvalidException){
-                return response()->json(['status' => 'Token is Invalid']);
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'Token is Invalid :Z',
+                    'message' => 'Please provide valid token'
+                ], 401);
             }else if ($e instanceof TokenExpiredException){
-                return response()->json(['status' => 'Token is Expired']);
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'Token is Expired :C',
+                    'message' => 'Please provide an existent token'
+                ],401);
             }else{
-                return response()->json(['status' => 'Authorization Token not found']);
+                return response()->json([
+                    'code' => 401,
+                    'status' => 'Authorization Token not found :|',
+                    'message' => 'Bearer Token is required'
+                ],401);
             }
         }
         return $next($request);

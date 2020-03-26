@@ -16,20 +16,23 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('group_id')->nullable();
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
 
             $table->string('name');
             $table->text('description');
             $table->dateTime('expire_date')->nullable();
-            $table->decimal('cost', 5,2)->default(0)->nullable();
+            $table->unsignedInteger('hours_spent')->nullable();
+            $table->decimal('task_cost', 5,2)->default(0)->nullable();
+
             $table->enum('status',Task::TASK_STATUS);
+            $table->enum('priority',Task::TASK_PRIORITY);
 
             $table->boolean('is_done')->default(false);
 
             $table->timestamps();
 
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('project_id')->references('id')->on('projects');
             $table->foreign('user_id')->references('id')->on('users');
 
         });

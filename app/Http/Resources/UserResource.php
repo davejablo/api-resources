@@ -16,16 +16,17 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'group_id' => $this->group_id,
+            'project_id' => $this->project_id,
             'name' => $this->name,
             'email' => $this->email,
+            'hr_wage' => $this->hr_wage,
             'email_verified_at' => $this->email_verified_at,
             'created_at' => date('d M Y H:i', strtotime($this->created_at)),
             'updated_at' => date('d M Y H:i', strtotime($this->updated_at)),
             'profile' => new UserProfileResource($this->whenLoaded('profile')),
-            'group' => new GroupResource($this->whenLoaded('group')),
+            'project' => new ProjectResource($this->whenLoaded('project')),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
+            'roles' => RoleResource::collection($this->whenLoaded('roles')),
         ];
-//        return parent::toArray($request);
     }
 }

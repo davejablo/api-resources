@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Role;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GroupResource extends JsonResource
+class RoleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,12 +15,9 @@ class GroupResource extends JsonResource
      */
     public function toArray($request)
     {
-//        return parent::toArray($request);
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'users' => UserResource::collection($this->whenLoaded('users')),
-            'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
         ];
     }
 }

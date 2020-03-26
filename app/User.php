@@ -17,8 +17,10 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'group_id'
+        'name', 'email', 'password', 'project_id', 'hr_wage'
     ];
+
+    const ROLES = ['ADMIN', 'LEADER', 'WORKER', 'CLIENT'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -51,6 +53,18 @@ class User extends Authenticatable implements JWTSubject
 //        });
 //    }
 
+    public function roles(){
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasAnyRoles($roles){
+        return null !== $this->roles()->whereIn('name', $roles)->first();
+    }
+
+    public function hasRole($role){
+        return null !== $this->roles()->where('name', $role)->first();
+    }
+
     public function profile()
     {
         return $this->hasOne(UserProfile::class);
@@ -60,8 +74,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Task::class);
     }
 
-    public function group(){
-        return $this->belongsTo(Group::class);
+    public function project(){
+        return $this->belongsTo(Project::class);
     }
 
     public function hasProfile(){
@@ -72,8 +86,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->tasks()->first() ? true : false;
     }
 
-    public function hasGroup(){
-        return $this->group()->first() ? true : false;
+    public function hasProject(){
+        return $this->project()->first() ? true : false;
     }
 
     public function getJWTIdentifier()
