@@ -78,7 +78,7 @@ class Project extends Model
                 $join->on('users.id', '=', 'role_user.user_id')
                     ->where('role_user.role_id', '=', 4);
             })
-            ->get();
+            ->first();
         return $user;
     }
 }
