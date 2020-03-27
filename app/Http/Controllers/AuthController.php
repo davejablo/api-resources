@@ -57,9 +57,15 @@ class AuthController extends Controller
                 break;
         }
 
-        $token = auth()->login($user);
+        return response()->json([
+            'code' => 200,
+            'status' => 'success',
+            'message' => 'You have succesfully registered a user <3',
+            'user' => $user,
+        ], 200);
 
-        return $this->respondWithToken($token);
+//        $token = auth()->login($user);
+//        return $this->respondWithToken($token);
     }
 
     public function login(Request $request)

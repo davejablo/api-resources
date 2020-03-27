@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use test\Mockery\ReturnTypeObjectTypeHint;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -44,6 +46,10 @@ class Project extends Model
         return $this->tasks()->count();
     }
 
+    public function getAmountOfAssignedUsers(){
+        return $this->users()->count();
+    }
+
     public function getAmountOfDoneTasks(){
         return $this->tasks()
             ->where('status', 'done')
@@ -63,5 +69,16 @@ class Project extends Model
             ->where('status', 'not_assigned')
             ->where('is_done', false)
             ->count();
+    }
+
+    public function getClient(){
+        $user = $this->users()
+            ->select('id', 'name', 'email')
+            ->join('role_user', function ($join) {
+                $join->on('users.id', '=', 'role_user.user_id')
+                    ->where('role_user.role_id', '=', 4);
+            })
+            ->get();
+        return $user;
     }
 }
