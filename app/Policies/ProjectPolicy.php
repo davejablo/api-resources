@@ -60,7 +60,7 @@ class ProjectPolicy
      */
     public function create(User $user)
     {
-        return $user->hasAnyRoles(['ADMIN', 'CLIENT']);
+        return $user->hasRole('ADMIN');
     }
 
 //    /**
