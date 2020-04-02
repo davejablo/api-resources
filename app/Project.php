@@ -61,7 +61,6 @@ class Project extends Model
         return $this->tasks()
             ->where('status', 'in_progress')
             ->where('is_done', false)
-            ->where('user_id', null)
             ->count();
     }
 
@@ -69,6 +68,7 @@ class Project extends Model
         return $this->tasks()
             ->where('status', 'not_assigned')
             ->where('is_done', false)
+            ->where('user_id', null)
             ->count();
     }
 
