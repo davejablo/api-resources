@@ -17,8 +17,8 @@ class TaskResource extends JsonResource
 //        return parent::toArray($request);
         return [
             'id' => $this->id,
-            'project_id' => $this->project_id,
-            'user_id' => $this->user_id,
+            'project' => new ProjectResource($this->project),
+            'user' => new UserResource($this->user),
             'name' => $this->name,
             'description' => $this->description,
             'expire_date' => $this->expire_date,
