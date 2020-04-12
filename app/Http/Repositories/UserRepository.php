@@ -41,7 +41,7 @@ class UserRepository
     }
 
     public function getAuthenticatedProject(){
-        return $userProject = $this->getAuthenticatedUser()->user()->firstOrFail();
+        return $userProject = $this->getAuthenticatedUser()->project()->firstOrFail();
     }
 
     public function getUserProject(User $user){
