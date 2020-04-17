@@ -15,19 +15,40 @@ class ProjectResource extends JsonResource
     public function toArray($request)
     {
 //        return parent::toArray($request);
+        if ($request->query())
         return [
+
             'id' => $this->id,
             'name' => $this->name,
             'budget' => $this->budget,
-            'tasks_cost' => $this->getTasksCost(),
-            'total_tasks' => $this->getAmountOfAllTasks(),
-            'done_tasks' => $this->getAmountOfDoneTasks(),
-            'in_progress_tasks' => $this->getAmountOfInProgressTasks(),
-            'not_assigned_tasks' => $this->getAmountOfNaTasks(),
-            'assignees' => $this->getAmountOfAssignedUsers(),
+            'report' => [
+                'date_start' => $request->date_start,
+                'date_end' => $request->date_end,
+                'tasks_cost' => $this->getTasksCost($request),
+                'total_tasks' => $this->getAmountOfAllTasks($request),
+                'done_tasks' => $this->getAmountOfDoneTasks($request),
+                'in_progress_tasks' => $this->getAmountOfInProgressTasks($request),
+                'not_assigned_tasks' => $this->getAmountOfNaTasks($request),
+                'assignees' => $this->getAmountOfAssignedUsers($request),
+            ],
             'client' => $this->getClient(),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
         ];
+        else
+            return [
+                'id' => $this->id,
+                'name' => $this->name,
+                'budget' => $this->budget,
+                'tasks_cost' => $this->getTasksCost($request),
+                'total_tasks' => $this->getAmountOfAllTasks($request),
+                'done_tasks' => $this->getAmountOfDoneTasks($request),
+                'in_progress_tasks' => $this->getAmountOfInProgressTasks($request),
+                'not_assigned_tasks' => $this->getAmountOfNaTasks($request),
+                'assignees' => $this->getAmountOfAssignedUsers($request),
+                'client' => $this->getClient(),
+                'users' => UserResource::collection($this->whenLoaded('users')),
+                'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
+            ];
     }
 }

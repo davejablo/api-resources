@@ -33,7 +33,16 @@ class Project extends Model
         return ($this->hasAnyTasks() || $this->hasAnyUsers()) ? true : false;
     }
 
-    public function getTasksCost(){
+    public function getTasksCost($request){
+        if ($request->query()){
+            $cost = $this->tasks()
+                ->whereBetween('updated_at', [$request->date_start, $request->date_end])
+                ->where('status', 'done')
+                ->where('is_done', true)
+                ->pluck('task_cost')
+                ->sum();
+        }
+        else
         $cost = $this->tasks()
             ->where('status', 'done')
             ->where('is_done', true)
@@ -42,29 +51,66 @@ class Project extends Model
         return number_format($cost, 2);
     }
 
-    public function getAmountOfAllTasks(){
+    public function getAmountOfAllTasks($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('created_at', [$request->date_start, $request->date_end])
+                ->count();
+        }
+        else
         return $this->tasks()->count();
     }
 
-    public function getAmountOfAssignedUsers(){
+    public function getAmountOfAssignedUsers($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('created_at', [$request->date_start, $request->date_end])
+                ->distinct('user_id')
+                ->count();
+        }
+        else
         return $this->users()->count();
     }
 
-    public function getAmountOfDoneTasks(){
+    public function getAmountOfDoneTasks($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('updated_at', [$request->date_start, $request->date_end])
+                ->where('status', 'done')
+                ->where('is_done', true)
+                ->count();
+        }
+        else
         return $this->tasks()
             ->where('status', 'done')
             ->where('is_done', true)
             ->count();
     }
 
-    public function getAmountOfInProgressTasks(){
+    public function getAmountOfInProgressTasks($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('created_at', [$request->date_start, $request->date_end])
+                ->where('status', 'in_progress')
+                ->where('is_done', false)
+                ->count();
+        }
+        else
         return $this->tasks()
             ->where('status', 'in_progress')
             ->where('is_done', false)
             ->count();
     }
 
-    public function getAmountOfNaTasks(){
+    public function getAmountOfNaTasks($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('created_at', [$request->date_start, $request->date_end])
+                ->where('status', 'not_assigned')
+                ->where('is_done', false)
+                ->where('user_id', null)
+                ->count();
+        }
         return $this->tasks()
             ->where('status', 'not_assigned')
             ->where('is_done', false)

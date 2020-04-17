@@ -11,6 +11,7 @@ use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Task;
 use App\User;
+use http\QueryString;
 use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 class ProjectController extends Controller
@@ -75,6 +76,15 @@ class ProjectController extends Controller
     {
         $authUser = $this->auth->user();
         $this->authorize('view', $project, Project::class);
+        if (request()->query())
+        {
+            request()->validate([
+                'date_start' => 'required|date|before_or_equal:today',
+                'date_end' => 'required|date|after:date_start',
+            ]);
+            return new ProjectResource($this->projectRepositoryInterface->getProject($project));
+        }
+        else
         return new ProjectResource($this->projectRepositoryInterface->getProject($project));
     }
 
