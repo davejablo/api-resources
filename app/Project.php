@@ -33,6 +33,15 @@ class Project extends Model
         return ($this->hasAnyTasks() || $this->hasAnyUsers()) ? true : false;
     }
 
+    public function tasksBetweenDate($request)
+    {
+        if ($request->query()){
+            return $this->tasks()->whereBetween('created_at', [$request->date_start, $request->date_end])->get();
+        }
+        else
+        return $this->tasks();
+    }
+
     public function getTasksCost($request){
         if ($request->query()){
             $cost = $this->tasks()
