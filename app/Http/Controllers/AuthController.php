@@ -73,10 +73,18 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
         try{
             if (!$token = auth()->attempt($credentials)) {
-                return response()->json(['error' => 'Invalid credentials :X'], 401);
+                return response()->json([
+                    'code' => 404,
+                    'status' => 'Invalid credentials :X',
+                    'message' => ' Please provide correct credentials.'
+                ], 401);
             }
         } catch (JWTException $exception){
-            return response()->json(['error' => 'Could not create token :/'], 500);
+            return response()->json([
+                'code' => 404,
+                'status' => 'Could not create token :/',
+                'message' => 'Please try again later.'
+            ], 500);
         }
 
         return $this->respondWithToken($token);
