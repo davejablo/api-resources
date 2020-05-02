@@ -61,6 +61,7 @@ class TaskPolicy
      */
     public function create(User $user)
     {
+        //todo: Czy lider i klient z innych projektow niz user dla ktorego jest task mogą go dodać ?
         return $user->hasAnyRoles(['ADMIN', 'LEADER', 'CLIENT']);
     }
 

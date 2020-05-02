@@ -29,7 +29,8 @@ class UserRepository
     }
 
     public  function getUsers(){
-        return $users = User::paginate(5);
+        $authUser = $this->getAuthenticatedUser();
+        return $authUser->hasRole('LEADER') ? $users = User::where('project_id', $authUser->project_id)->paginate(5) : $users = User::paginate(5);
     }
 
     public function getUser($user){

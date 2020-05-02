@@ -17,7 +17,18 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasRole('ADMIN');
+        switch ($user) {
+            case $user->hasRole('ADMIN'):
+                return true;
+                break;
+
+            case $user->hasRole(['LEADER']):
+                return true;
+                break;
+
+            default:
+                return false;
+        }
     }
 
     /**
@@ -35,6 +46,7 @@ class UserPolicy
                 break;
 
             case $user->hasRole(['LEADER']):
+//                return true;
                 return $user->project_id == $model->project_id;
                 break;
 
