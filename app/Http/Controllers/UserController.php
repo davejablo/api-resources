@@ -37,7 +37,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewAny', User::class);
-        return UserResource::collection($this->userRepository->getUsers()->load('profile', 'roles', 'project'));
+        return UserResource::collection($this->userRepository->getUsers());
     }
 
     /**
