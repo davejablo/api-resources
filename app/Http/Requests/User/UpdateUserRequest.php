@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'hr_wage' => 'nullable|integer|between:12,90',
+            'hr_wage' => 'nullable|numeric|between:12.00,90.00',
             'project_id' => 'nullable', Rule::in(Project::all()->pluck('id')),
         ];
     }

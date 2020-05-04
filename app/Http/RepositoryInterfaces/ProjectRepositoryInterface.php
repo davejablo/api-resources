@@ -10,7 +10,9 @@ interface ProjectRepositoryInterface
 {
     public function createAndReturnProject($request);
 
-    public function getProjects();
+    public function getProjects($results);
+
+    public function getAllProjects();
 
     public function getProject($project);
 

@@ -12,12 +12,14 @@ use App\Http\Resources\UserResource;
 use App\Task;
 use App\User;
 use http\QueryString;
+use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 class ProjectController extends Controller
 {
     protected $projectRepositoryInterface;
     protected $auth;
+    const RESULTS = [5, 15, 25, 50, 75, 100];
 
     public function __construct(ProjectRepositoryInterface $projectInterface, Auth $auth)
     {
@@ -32,7 +34,20 @@ class ProjectController extends Controller
     public function index()
     {
         $this->authorize('viewAny',Project::class);
-        return ProjectResource::collection($this->projectRepositoryInterface->getProjects());
+        if (request()->query())
+        {
+            request()->validate([
+                'results' => [
+                    'required',
+                    'integer',
+                    Rule::in(self::RESULTS)
+                ]
+            ]);
+            $results = request()->get('results');
+            return ProjectResource::collection($this->projectRepositoryInterface->getProjects($results));
+        }
+        else
+        return ProjectResource::collection($this->projectRepositoryInterface->getAllProjects());
 //        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('tasks','users'));
     }
 

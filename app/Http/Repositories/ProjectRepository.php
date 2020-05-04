@@ -18,8 +18,12 @@ class ProjectRepository implements ProjectRepositoryInterface
         }
     }
 
-    public function getProjects(){
-        return $projects = Project::paginate(5);
+    public function getProjects($results){
+        return $projects = Project::paginate($results);
+    }
+
+    public function getAllProjects(){
+        return $projects = Project::all();
     }
 
     public function getProject($project){
