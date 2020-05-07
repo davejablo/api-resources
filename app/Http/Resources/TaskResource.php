@@ -26,6 +26,7 @@ class TaskResource extends JsonResource
             'task_cost' => $this->task_cost,
             'status' => $this->status,
             'is_done' => $this->is_done,
+            'done_at' => $this->done_at,
             'priority' => $this->priority,
         ];
     }

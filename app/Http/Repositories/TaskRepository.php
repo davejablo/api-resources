@@ -8,6 +8,7 @@ use App\Mail\NewTaskNotificationMail;
 use App\Task;
 use App\Http\Resources\TaskResource;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -44,7 +45,11 @@ class TaskRepository implements TaskRepositoryInterface
         $taskFromDb = Task::findOrFail($id);
         if ($hours = $request->hours_spent){
             $taskFromDb->task_cost = $hours * Auth::user()->hr_wage;
+            $taskFromDb->is_done = true;
+            $taskFromDb->status = Task::TASK_STATUS[2];
+            $taskFromDb->done_at = Carbon::now()->toDateTimeString();
             $taskFromDb->update($request->validated());
+            return $taskFromDb = Task::findOrFail($id);
         }
         else if($user = $request->user_id){
             $taskFromDb->update($request->validated());

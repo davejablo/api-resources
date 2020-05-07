@@ -29,6 +29,7 @@ class CreateTasksTable extends Migration
             $table->enum('priority',Task::TASK_PRIORITY);
 
             $table->boolean('is_done')->default(false);
+            $table->dateTime('done_at')->nullable();
 
             $table->timestamps();
 

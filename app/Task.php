@@ -18,6 +18,7 @@ class Task extends Model
         'task_cost',
         'status',
         'is_done',
+        'done_at',
         'priority',
     ];
 

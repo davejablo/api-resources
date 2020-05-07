@@ -45,7 +45,7 @@ class Project extends Model
     public function getTasksCost($request){
         if ($request->query()){
             $cost = $this->tasks()
-                ->whereBetween('updated_at', [$request->date_start, $request->date_end])
+                ->whereBetween('done_at', [$request->date_start, $request->date_end])
                 ->where('status', 'done')
                 ->where('is_done', true)
                 ->pluck('task_cost')
@@ -84,7 +84,7 @@ class Project extends Model
     public function getAmountOfDoneTasks($request){
         if ($request->query()){
             return $this->tasks()
-                ->whereBetween('updated_at', [$request->date_start, $request->date_end])
+                ->whereBetween('done_at', [$request->date_start, $request->date_end])
                 ->where('status', 'done')
                 ->where('is_done', true)
                 ->count();
