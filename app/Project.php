@@ -33,10 +33,14 @@ class Project extends Model
         return ($this->hasAnyTasks() || $this->hasAnyUsers()) ? true : false;
     }
 
-    public function tasksBetweenDate($request)
+    public function doneTasksBetweenDate($request)
     {
         if ($request->query()){
-            return $this->tasks()->whereBetween('created_at', [$request->date_start, $request->date_end])->get();
+            return $this->tasks()
+                ->whereBetween('done_at', [$request->date_start, $request->date_end])
+                ->where('status', 'done')
+                ->where('is_done', true)
+                ->get();
         }
         else
         return $this->tasks();

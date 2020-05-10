@@ -30,7 +30,7 @@ class ProjectResource extends JsonResource
                 'in_progress_tasks' => $this->getAmountOfInProgressTasks($request),
                 'not_assigned_tasks' => $this->getAmountOfNaTasks($request),
                 'assignees' => $this->getAmountOfAssignedUsers($request),
-                'tasks_between' => $this->tasksBetweenDate($request),
+                'done_tasks_between' => $this->doneTasksBetweenDate($request),
             ],
             'client' => $this->getClient(),
             'users' => UserResource::collection($this->whenLoaded('users')),
