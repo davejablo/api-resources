@@ -29,6 +29,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'projects'], function () {
             Route::get('/{project}', 'ProjectController@show');
             Route::get('/{project}/tasks', 'ProjectController@getProjectTasks');
+            Route::get('/{project}/documents', 'ProjectController@getProjectDocuments');
             Route::get('/{project}/tasks/{task}', 'ProjectController@getSingleProjectTask');
             Route::get('/{project}/users', 'ProjectController@getProjectUsers');
             Route::get('/{project}/users/{user}', 'ProjectController@getSingleProjectUser');
@@ -57,7 +58,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         });
 
-            Route::post('logout', 'AuthController@logout');
+        Route::resource('documents', 'DocumentController');
+
+        Route::post('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@getAuthUser');
 
         Route::get('user/profile', 'UserController@getAuthenticatedProfile');
@@ -65,4 +68,5 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('user/tasks', 'UserController@getAuthenticatedTasks');
         Route::get('user/tasks/{task}', 'UserController@getSingleAuthenticatedTask');
     });
+
 });

@@ -27,4 +27,6 @@ interface ProjectRepositoryInterface
     public function getProjectUsers(Project $project);
 
     public function getSingleProjectUser(Project $project, User $user);
+
+    public function getProjectDocuments(Project $project);
 }

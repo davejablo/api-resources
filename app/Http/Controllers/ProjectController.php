@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Document\StoreDocumentRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
+use App\Http\Resources\DocumentResource;
 use App\Project;
 use App\Http\RepositoryInterfaces\ProjectRepositoryInterface;
 use App\Http\Resources\ProjectResource;
@@ -205,4 +207,16 @@ class ProjectController extends Controller
         $this->authorize('view', $authUser->project, Project::class);
         return new UserResource($this->projectRepositoryInterface->getSingleProjectUser($project, $user));
     }
+
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function getProjectDocuments(Project $project)
+    {
+        $this->authorize('view', $project, Project::class);
+        return DocumentResource::collection($this->projectRepositoryInterface->getProjectDocuments($project));
+    }
+
 }

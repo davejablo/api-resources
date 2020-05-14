@@ -16,9 +16,12 @@ class Project extends Model
         return $this->hasMany(User::class);
     }
 
-    public function tasks()
-    {
+    public function tasks(){
         return $this->hasMany(Task::class);
+    }
+
+    public function documents(){
+        return $this->hasMany(Document::class);
     }
 
     public function hasAnyUsers(){

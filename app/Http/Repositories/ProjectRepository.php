@@ -62,4 +62,9 @@ class ProjectRepository implements ProjectRepositoryInterface
     {
         return $singleProjectUser = $project->users()->where('id', $user->id)->firstOrFail();
     }
+
+    public function getProjectDocuments(Project $project)
+    {
+        return $projectDocuments = $project->documents()->paginate(5);
+    }
 }
