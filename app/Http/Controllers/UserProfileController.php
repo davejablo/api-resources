@@ -27,7 +27,7 @@ class UserProfileController extends Controller
         return response()->json([
             'code' => 200,
             'status' => 'success',
-            'message' => 'Task updated',
+            'message' => 'Profile updated',
             'data' => [
                 'item' => $updatedProfile,
             ]

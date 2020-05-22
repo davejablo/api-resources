@@ -10,7 +10,9 @@ interface ProjectRepositoryInterface
 {
     public function createAndReturnProject($request);
 
-    public function getProjects();
+    public function getProjects($results);
+
+    public function getAllProjects();
 
     public function getProject($project);
 
@@ -25,4 +27,6 @@ interface ProjectRepositoryInterface
     public function getProjectUsers(Project $project);
 
     public function getSingleProjectUser(Project $project, User $user);
+
+    public function getProjectDocuments(Project $project);
 }

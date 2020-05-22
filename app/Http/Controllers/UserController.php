@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\UserRepository;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Requests\UserProfile\UpdateUserProfileRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
@@ -48,6 +49,27 @@ class UserController extends Controller
     {
         $this->authorize('view', $user, User::class);
         return new UserResource($this->userRepository->getUser($user)->load('roles'));
+    }
+
+    /**
+     * @param UpdateUserRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update(UpdateUserRequest $request, $id)
+    {
+        $this->authorize('update', User::class);
+        $updatedUser = $this->userRepository->updateAndReturnUser($request, $id);
+
+        return response()->json([
+            'code' => 200,
+            'status' => 'Success',
+            'message' => 'User updated',
+            'data' => [
+                'item' => $updatedUser,
+            ]
+        ], 200);
     }
 
     public function getUserProfile(User $user){

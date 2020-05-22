@@ -17,7 +17,18 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasRole('ADMIN');
+        switch ($user) {
+            case $user->hasRole('ADMIN'):
+                return true;
+                break;
+
+            case $user->hasRole(['LEADER']):
+                return true;
+                break;
+
+            default:
+                return false;
+        }
     }
 
     /**
@@ -35,6 +46,7 @@ class UserPolicy
                 break;
 
             case $user->hasRole(['LEADER']):
+//                return true;
                 return $user->project_id == $model->project_id;
                 break;
 
@@ -66,12 +78,11 @@ class UserPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user)
     {
-        return $user->hasRole('ADMIN');
+        return $user->hasAnyRoles(['ADMIN', 'LEADER']);
     }
 
     /**

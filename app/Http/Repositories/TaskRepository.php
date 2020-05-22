@@ -4,10 +4,13 @@
 namespace App\Http\Repositories;
 
 use App\Http\RepositoryInterfaces\TaskRepositoryInterface;
+use App\Mail\NewTaskNotificationMail;
 use App\Task;
 use App\Http\Resources\TaskResource;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -42,13 +45,23 @@ class TaskRepository implements TaskRepositoryInterface
         $taskFromDb = Task::findOrFail($id);
         if ($hours = $request->hours_spent){
             $taskFromDb->task_cost = $hours * Auth::user()->hr_wage;
+            $taskFromDb->is_done = true;
+            $taskFromDb->status = Task::TASK_STATUS[2];
+            $taskFromDb->done_at = Carbon::now()->toDateTimeString();
             $taskFromDb->update($request->validated());
+            return $taskFromDb = Task::findOrFail($id);
         }
-        else
-        $taskFromDb->update($request->validated());
-        $updatedTaskFromDb = Task::findOrFail($id);
-
-        return new TaskResource($updatedTaskFromDb);
+        else if($user = $request->user_id){
+            $taskFromDb->update($request->validated());
+            $updatedTaskFromDb = Task::findOrFail($id);
+            $emailTo = $updatedTaskFromDb->user->email;
+            $name = $updatedTaskFromDb->user->name;
+            $taskName = $updatedTaskFromDb->name;
+            $projectName = $updatedTaskFromDb->project->name;
+            $expr = $updatedTaskFromDb->expire_date;
+            Mail::to($emailTo)->send(new NewTaskNotificationMail($name, $taskName, $projectName, $expr));
+            return new TaskResource($updatedTaskFromDb);
+        }
     }
 
     public function getTaskProject(Task $task){

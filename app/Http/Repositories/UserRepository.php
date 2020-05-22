@@ -20,7 +20,7 @@ class UserRepository
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'project_id' => $request->get('project_id')
+            'user_id' => $request->get('user_id')
         ]);
 
         if ($newUser->save()){
@@ -29,7 +29,10 @@ class UserRepository
     }
 
     public  function getUsers(){
-        return $users = User::paginate(5);
+        $authUser = $this->getAuthenticatedUser();
+        return $authUser->hasRole('LEADER')
+            ? $users = User::where('project_id', $authUser->project_id)->with('profile', 'roles', 'project')->paginate(5)
+            : $users = User::with('profile', 'roles', 'project')->paginate(5);
     }
 
     public function getUser($user){
@@ -45,7 +48,7 @@ class UserRepository
     }
 
     public function getUserProject(User $user){
-        return $userProject = $user->project()->firstOrFail();
+        return $userProject = $user->user()->firstOrFail();
     }
 
     public function getUserTasks(User $user){
@@ -68,4 +71,13 @@ class UserRepository
         $user = $this->getAuthenticatedUser();
         return $userSingleTask = $user->tasks()->where('id', $task->id)->firstOrFail();
     }
+
+    public function updateAndReturnUser($request, $id){
+        $userFromDb = User::findOrFail($id);
+        $userFromDb->update($request->validated());
+        $updatedUserFromDb = User::findOrFail($id);
+
+        return new UserResource($updatedUserFromDb);
+    }
+
 }

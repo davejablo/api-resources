@@ -35,7 +35,7 @@ class StoreTaskRequest extends FormRequest
                     'integer'
                 ],
                 'name' => 'required|string|min:2|max:50',
-                'description' => 'string|min:5|max:255|nullable',
+                'description' => 'string|min:5|max:255|required',
                 'expire_date' => 'required|date|after_or_equal:today',
                 'hours_spent' => 'integer|min:1|max:24|nullable',
                 'status' => 'required', Rule::in(Task::TASK_STATUS[1]),
@@ -47,7 +47,7 @@ class StoreTaskRequest extends FormRequest
                 'project_id' => Rule::in(Project::all()->pluck('id')),
                 'user_id' => 'nullable',
                 'name' => 'required|string|min:2|max:50',
-                'description' => 'string|min:5|max:255|nullable',
+                'description' => 'string|min:5|max:255|required',
                 'expire_date' => 'required|date|after_or_equal:today',
                 'status' => Rule::in(Task::TASK_STATUS[0]),
                 'priority' => 'required', Rule::in(Task::TASK_PRIORITY),

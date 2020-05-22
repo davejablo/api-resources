@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use test\Mockery\ReturnTypeObjectTypeHint;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -14,9 +16,12 @@ class Project extends Model
         return $this->hasMany(User::class);
     }
 
-    public function tasks()
-    {
+    public function tasks(){
         return $this->hasMany(Task::class);
+    }
+
+    public function documents(){
+        return $this->hasMany(Document::class);
     }
 
     public function hasAnyUsers(){
@@ -31,7 +36,29 @@ class Project extends Model
         return ($this->hasAnyTasks() || $this->hasAnyUsers()) ? true : false;
     }
 
-    public function getTasksCost(){
+    public function doneTasksBetweenDate($request)
+    {
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('done_at', [$request->date_start, $request->date_end])
+                ->where('status', 'done')
+                ->where('is_done', true)
+                ->get();
+        }
+        else
+        return $this->tasks();
+    }
+
+    public function getTasksCost($request){
+        if ($request->query()){
+            $cost = $this->tasks()
+                ->whereBetween('done_at', [$request->date_start, $request->date_end])
+                ->where('status', 'done')
+                ->where('is_done', true)
+                ->pluck('task_cost')
+                ->sum();
+        }
+        else
         $cost = $this->tasks()
             ->where('status', 'done')
             ->where('is_done', true)
@@ -40,28 +67,81 @@ class Project extends Model
         return number_format($cost, 2);
     }
 
-    public function getAmountOfAllTasks(){
+    public function getAmountOfAllTasks($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('created_at', [$request->date_start, $request->date_end])
+                ->count();
+        }
+        else
         return $this->tasks()->count();
     }
 
-    public function getAmountOfDoneTasks(){
+    public function getAmountOfAssignedUsers($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('created_at', [$request->date_start, $request->date_end])
+                ->distinct('user_id')
+                ->count();
+        }
+        else
+        return $this->users()->count();
+    }
+
+    public function getAmountOfDoneTasks($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('done_at', [$request->date_start, $request->date_end])
+                ->where('status', 'done')
+                ->where('is_done', true)
+                ->count();
+        }
+        else
         return $this->tasks()
             ->where('status', 'done')
             ->where('is_done', true)
             ->count();
     }
 
-    public function getAmountOfInProgressTasks(){
+    public function getAmountOfInProgressTasks($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('created_at', [$request->date_start, $request->date_end])
+                ->where('status', 'in_progress')
+                ->where('is_done', false)
+                ->count();
+        }
+        else
         return $this->tasks()
             ->where('status', 'in_progress')
             ->where('is_done', false)
             ->count();
     }
 
-    public function getAmountOfNaTasks(){
+    public function getAmountOfNaTasks($request){
+        if ($request->query()){
+            return $this->tasks()
+                ->whereBetween('created_at', [$request->date_start, $request->date_end])
+                ->where('status', 'not_assigned')
+                ->where('is_done', false)
+                ->where('user_id', null)
+                ->count();
+        }
         return $this->tasks()
             ->where('status', 'not_assigned')
             ->where('is_done', false)
+            ->where('user_id', null)
             ->count();
+    }
+
+    public function getClient(){
+        $user = $this->users()
+            ->select('id', 'name', 'email')
+            ->join('role_user', function ($join) {
+                $join->on('users.id', '=', 'role_user.user_id')
+                    ->where('role_user.role_id', '=', 4);
+            })
+            ->first();
+        return $user;
     }
 }

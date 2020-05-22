@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Document\StoreDocumentRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
+use App\Http\Resources\DocumentResource;
 use App\Project;
 use App\Http\RepositoryInterfaces\ProjectRepositoryInterface;
 use App\Http\Resources\ProjectResource;
@@ -11,12 +13,15 @@ use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Task;
 use App\User;
+use http\QueryString;
+use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 class ProjectController extends Controller
 {
     protected $projectRepositoryInterface;
     protected $auth;
+    const RESULTS = [5, 15, 25, 50, 75, 100];
 
     public function __construct(ProjectRepositoryInterface $projectInterface, Auth $auth)
     {
@@ -31,7 +36,20 @@ class ProjectController extends Controller
     public function index()
     {
         $this->authorize('viewAny',Project::class);
-        return ProjectResource::collection($this->projectRepositoryInterface->getProjects());
+        if (request()->query())
+        {
+            request()->validate([
+                'results' => [
+                    'required',
+                    'integer',
+                    Rule::in(self::RESULTS)
+                ]
+            ]);
+            $results = request()->get('results');
+            return ProjectResource::collection($this->projectRepositoryInterface->getProjects($results));
+        }
+        else
+        return ProjectResource::collection($this->projectRepositoryInterface->getAllProjects());
 //        return ProjectResource::collection($this->projectRepositoryInterface->getProjects()->load('tasks','users'));
     }
 
@@ -75,6 +93,15 @@ class ProjectController extends Controller
     {
         $authUser = $this->auth->user();
         $this->authorize('view', $project, Project::class);
+        if (request()->query())
+        {
+            request()->validate([
+                'date_start' => 'required|date|before_or_equal:today',
+                'date_end' => 'required|date|after:date_start',
+            ]);
+            return new ProjectResource($this->projectRepositoryInterface->getProject($project));
+        }
+        else
         return new ProjectResource($this->projectRepositoryInterface->getProject($project));
     }
 
@@ -180,4 +207,16 @@ class ProjectController extends Controller
         $this->authorize('view', $authUser->project, Project::class);
         return new UserResource($this->projectRepositoryInterface->getSingleProjectUser($project, $user));
     }
+
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function getProjectDocuments(Project $project)
+    {
+        $this->authorize('view', $project, Project::class);
+        return DocumentResource::collection($this->projectRepositoryInterface->getProjectDocuments($project));
+    }
+
 }

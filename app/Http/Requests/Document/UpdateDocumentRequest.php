@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Project;
+namespace App\Http\Requests\Document;
 
+use App\Project;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UpdateProjectRequest extends FormRequest
+class UpdateDocumentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +26,8 @@ class UpdateProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'nullable|string|max:50',
-            'budget' => 'required|numeric|between:0,999999.99',
+            'project_id' => 'nullable', Rule::in(Project::all()->pluck('id')),
+            'description' => 'nullable|string|min:5|max:255|nullable',
         ];
     }
 }

@@ -2,17 +2,16 @@
 
 namespace App\Policies;
 
-use App\Project;
-use App\Task;
+use App\Document;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TaskPolicy
+class DocumentPolicy
 {
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any tasks.
+     * Determine whether the user can view any documents.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -23,13 +22,13 @@ class TaskPolicy
     }
 
     /**
-     * Determine whether the user can view the task.
+     * Determine whether the user can view the document.
      *
      * @param  \App\User  $user
-     * @param  \App\Task  $task
+     * @param  \App\Document  $document
      * @return mixed
      */
-    public function view(User $user, Task $task)
+    public function view(User $user, Document $document)
     {
         switch ($user){
             case $user->hasRole('ADMIN'):
@@ -37,15 +36,15 @@ class TaskPolicy
                 break;
 
             case $user->hasRole(['LEADER']):
-                return $user->project_id == $task->project_id;
+                return $user->project_id == $document->project_id;
                 break;
 
             case $user->hasRole('WORKER'):
-                return $user->project_id == $task->project_id;
+                return $user->project_id == $document->project_id;
                 break;
 
             case $user->hasRole('CLIENT'):
-                return $user->project_id == $task->project_id;
+                return $user->project_id == $document->project_id;
                 break;
 
             default:
@@ -54,25 +53,24 @@ class TaskPolicy
     }
 
     /**
-     * Determine whether the user can create tasks.
+     * Determine whether the user can create documents.
      *
      * @param  \App\User  $user
      * @return mixed
      */
     public function create(User $user)
     {
-        //todo: Czy lider i klient z innych projektow niz user dla ktorego jest task mogą go dodać ?
         return $user->hasAnyRoles(['ADMIN', 'LEADER', 'CLIENT']);
     }
 
     /**
-     * Determine whether the user can update the task.
+     * Determine whether the user can update the document.
      *
      * @param  \App\User  $user
-     * @param  \App\Task  $task
+     * @param  \App\Document  $document
      * @return mixed
      */
-    public function update(User $user, Task $task)
+    public function update(User $user, Document $document)
     {
         switch ($user){
             case $user->hasRole('ADMIN'):
@@ -80,15 +78,11 @@ class TaskPolicy
                 break;
 
             case $user->hasRole(['LEADER']):
-                return $user->project_id == $task->project_id;
-                break;
-
-            case $user->hasRole('WORKER'):
-                return $user->project_id == $task->project_id && $user->id == $task->user_id;
+                return $user->project_id == $document->project_id;
                 break;
 
             case $user->hasRole('CLIENT'):
-                return $user->project_id == $task->project_id;
+                return $user->project_id == $document->project_id;
                 break;
 
             default:
@@ -97,47 +91,52 @@ class TaskPolicy
     }
 
     /**
-     * Determine whether the user can delete the task.
+     * Determine whether the user can delete the document.
      *
      * @param  \App\User  $user
-     * @param  \App\Task  $task
+     * @param  \App\Document  $document
      * @return mixed
      */
-    public function delete(User $user, Task $task)
+    public function delete(User $user, Document $document)
     {
-        switch ($user) {
+        switch ($user){
             case $user->hasRole('ADMIN'):
                 return true;
                 break;
 
-            case $user->hasAnyRoles(['LEADER', 'CLIENT']):
-                return $user->project_id == $task->project_id;
+            case $user->hasRole(['LEADER']):
+                return $user->project_id == $document->project_id;
                 break;
+
+            case $user->hasRole('CLIENT'):
+                return $user->project_id == $document->project_id;
+                break;
+
             default:
                 return false;
         }
     }
 
     /**
-     * Determine whether the user can restore the task.
+     * Determine whether the user can restore the document.
      *
      * @param  \App\User  $user
-     * @param  \App\Task  $task
+     * @param  \App\Document  $document
      * @return mixed
      */
-    public function restore(User $user, Task $task)
+    public function restore(User $user, Document $document)
     {
         //
     }
 
     /**
-     * Determine whether the user can permanently delete the task.
+     * Determine whether the user can permanently delete the document.
      *
      * @param  \App\User  $user
-     * @param  \App\Task  $task
+     * @param  \App\Document  $document
      * @return mixed
      */
-    public function forceDelete(User $user, Task $task)
+    public function forceDelete(User $user, Document $document)
     {
         //
     }

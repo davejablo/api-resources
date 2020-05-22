@@ -18,8 +18,12 @@ class ProjectRepository implements ProjectRepositoryInterface
         }
     }
 
-    public function getProjects(){
-        return $projects = Project::paginate(5);
+    public function getProjects($results){
+        return $projects = Project::paginate($results);
+    }
+
+    public function getAllProjects(){
+        return $projects = Project::all();
     }
 
     public function getProject($project){
@@ -57,5 +61,10 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function getSingleProjectUser(Project $project, User $user)
     {
         return $singleProjectUser = $project->users()->where('id', $user->id)->firstOrFail();
+    }
+
+    public function getProjectDocuments(Project $project)
+    {
+        return $projectDocuments = $project->documents()->paginate(5);
     }
 }
