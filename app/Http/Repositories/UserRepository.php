@@ -3,6 +3,7 @@
 
 namespace App\Http\Repositories;
 use App\Http\Resources\UserResource;
+use App\Project;
 use App\Task;
 use App\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -64,7 +65,11 @@ class UserRepository
     }
 
     public function getAuthenticatedTasks(){
-        return $userTasks = $this->getAuthenticatedUser()->tasks()->paginate(5);
+        $authUser = $this->getAuthenticatedUser();
+        $project = Project::findOrFail($authUser->project_id);
+        return $authUser->hasRole('LEADER')
+            ? $tasks = $project->tasks
+            : $userTasks = $this->getAuthenticatedUser()->tasks()->paginate(5);
     }
 
     public function getSingleAuthenticatedTask(Task $task){

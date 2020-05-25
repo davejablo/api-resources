@@ -192,7 +192,7 @@ class ProjectController extends Controller
     public function getProjectUsers(Project $project)
     {
         $authUser = $this->auth->user();
-        $this->authorize('view', $authUser->project);
+        $this->authorize('view', $project);
         return UserResource::collection($this->projectRepositoryInterface->getProjectUsers($project));
     }
 

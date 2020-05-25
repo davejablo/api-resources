@@ -15,7 +15,7 @@ class ProjectResource extends JsonResource
     public function toArray($request)
     {
 //        return parent::toArray($request);
-        if ($request->query())
+        if ($request->get('date_start') && $request->get('date_end'))
         return [
 
             'id' => $this->id,

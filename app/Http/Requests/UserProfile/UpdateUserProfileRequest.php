@@ -26,6 +26,7 @@ class UpdateUserProfileRequest extends FormRequest
         return [
             'phone' => 'nullable|string|size:11|unique:user_profiles',
             'birth_date' => 'nullable|before:today|after:1920-01-01',
+            'name' => 'nullable|string|max:50'
         ];
     }
 }

@@ -44,11 +44,12 @@ class TaskRepository implements TaskRepositoryInterface
     public function updateAndReturnTask($request, $id){
         $taskFromDb = Task::findOrFail($id);
         if ($hours = $request->hours_spent){
+            //TODO: What if hours are updated by leader or admin or client ?
             $taskFromDb->task_cost = $hours * Auth::user()->hr_wage;
             $taskFromDb->is_done = true;
-            $taskFromDb->status = Task::TASK_STATUS[2];
+            $taskFromDb->status = 'done';
             $taskFromDb->done_at = Carbon::now()->toDateTimeString();
-            $taskFromDb->update($request->validated());
+            $taskFromDb->update();
             return $taskFromDb = Task::findOrFail($id);
         }
         else if($user = $request->user_id){
