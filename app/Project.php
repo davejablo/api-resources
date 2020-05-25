@@ -38,19 +38,15 @@ class Project extends Model
 
     public function doneTasksBetweenDate($request)
     {
-        if ($request->query()){
             return $this->tasks()
                 ->whereBetween('done_at', [$request->date_start, $request->date_end])
                 ->where('status', 'done')
                 ->where('is_done', true)
                 ->get();
-        }
-        else
-        return $this->tasks();
     }
 
     public function getTasksCost($request){
-        if ($request->query()){
+        if ($request->get('date_start') && $request->get('date_end')){
             $cost = $this->tasks()
                 ->whereBetween('done_at', [$request->date_start, $request->date_end])
                 ->where('status', 'done')
@@ -68,7 +64,7 @@ class Project extends Model
     }
 
     public function getAmountOfAllTasks($request){
-        if ($request->query()){
+        if ($request->get('date_start') && $request->get('date_end')){
             return $this->tasks()
                 ->whereBetween('created_at', [$request->date_start, $request->date_end])
                 ->count();
@@ -78,7 +74,7 @@ class Project extends Model
     }
 
     public function getAmountOfAssignedUsers($request){
-        if ($request->query()){
+        if ($request->get('date_start') && $request->get('date_end')){
             return $this->tasks()
                 ->whereBetween('created_at', [$request->date_start, $request->date_end])
                 ->distinct('user_id')
@@ -89,7 +85,7 @@ class Project extends Model
     }
 
     public function getAmountOfDoneTasks($request){
-        if ($request->query()){
+        if ($request->get('date_start') && $request->get('date_end')){
             return $this->tasks()
                 ->whereBetween('done_at', [$request->date_start, $request->date_end])
                 ->where('status', 'done')
@@ -104,7 +100,7 @@ class Project extends Model
     }
 
     public function getAmountOfInProgressTasks($request){
-        if ($request->query()){
+        if ($request->get('date_start') && $request->get('date_end')){
             return $this->tasks()
                 ->whereBetween('created_at', [$request->date_start, $request->date_end])
                 ->where('status', 'in_progress')
@@ -119,7 +115,7 @@ class Project extends Model
     }
 
     public function getAmountOfNaTasks($request){
-        if ($request->query()){
+        if ($request->get('date_start') && $request->get('date_end')){
             return $this->tasks()
                 ->whereBetween('created_at', [$request->date_start, $request->date_end])
                 ->where('status', 'not_assigned')

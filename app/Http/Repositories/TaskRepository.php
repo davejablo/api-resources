@@ -49,6 +49,7 @@ class TaskRepository implements TaskRepositoryInterface
             $taskFromDb->is_done = true;
             $taskFromDb->status = 'done';
             $taskFromDb->done_at = Carbon::now()->toDateTimeString();
+            $taskFromDb->hours_spent = $hours;
             $taskFromDb->update();
             return $taskFromDb = Task::findOrFail($id);
         }
