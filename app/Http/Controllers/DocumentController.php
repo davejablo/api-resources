@@ -23,6 +23,7 @@ class DocumentController extends Controller
 
     /**
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
@@ -43,11 +44,12 @@ class DocumentController extends Controller
     /**
      * @param StoreDocumentRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(StoreDocumentRequest $request)
     {
-        $authUser = $this->auth->user();
-        $this->authorize('create', $authUser, Document::class);
+//        $authUser = $this->auth->user();
+        $this->authorize('create',Document::class);
 
         $documentPath = $request->file('document')->store('uploads/documents', 'public');
         $document = Document::create([
@@ -70,6 +72,7 @@ class DocumentController extends Controller
     /**
      * @param Document $document
      * @return DocumentResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Document $document)
     {
@@ -95,6 +98,7 @@ class DocumentController extends Controller
      * @param UpdateDocumentRequest $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(UpdateDocumentRequest $request, $id)
     {
@@ -125,7 +129,7 @@ class DocumentController extends Controller
     public function destroy(Document $document)
     {
         $authUser = $this->auth->user();
-        $this->authorize('delete', $authUser, Document::class);
+        $this->authorize('delete', $document, Document::class);
 
         unlink(storage_path('app/public/'.$document->document));
         if ($document->delete())

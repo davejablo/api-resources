@@ -96,6 +96,7 @@ class UserController extends Controller
     }
 
     public function getAuthenticatedTasks(){
+
         return TaskResource::collection($this->userRepository->getAuthenticatedTasks());
     }
 
