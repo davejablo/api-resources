@@ -55,7 +55,7 @@ class ProjectRepository implements ProjectRepositoryInterface
 
     public function getProjectUsers(Project $project)
     {
-        return $projectUsers = $project->users()->with('roles', 'profile', 'project')->paginate(5);
+        return $projectUsers = $project->users()->with('roles', 'profile', 'project')->paginate(10);
     }
 
     public function getSingleProjectUser(Project $project, User $user)

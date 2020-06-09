@@ -19,7 +19,13 @@ class TaskRepository implements TaskRepositoryInterface
             $hours = $request->hours_spent;
             $foundUser = User::find($user_id);
             $newTask = new Task($request->validated());
-            $newTask->task_cost = $hours * $foundUser->hr_wage;
+            if ($hours){
+                $newTask->task_cost = $hours * $foundUser->hr_wage;
+                $newTask->status = 'done';
+                $newTask->save();
+            }
+            else
+            $newTask->status = 'in_progress';
             $newTask->save();
         }
         else
@@ -54,6 +60,7 @@ class TaskRepository implements TaskRepositoryInterface
             return $taskFromDb = Task::findOrFail($id);
         }
         else if($user = $request->user_id){
+            $taskFromDb->status = Task::TASK_STATUS[1];
             $taskFromDb->update($request->validated());
             $updatedTaskFromDb = Task::findOrFail($id);
             $emailTo = $updatedTaskFromDb->user->email;
